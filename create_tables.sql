@@ -1,4 +1,7 @@
 
+CREATE DATABASE IF NOT EXISTS `msgdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `msgdb`;
+
 CREATE TABLE IF NOT EXISTS `msg` (
   `msgseq` int(11) NOT NULL AUTO_INCREMENT,
   `msgtext` varchar(10) NOT NULL,
