@@ -1,0 +1,7 @@
+
+CREATE TABLE IF NOT EXISTS `msg` (
+  `msgseq` int(11) NOT NULL AUTO_INCREMENT,
+  `msgtext` varchar(10) NOT NULL,
+  PRIMARY KEY (`msgseq`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+

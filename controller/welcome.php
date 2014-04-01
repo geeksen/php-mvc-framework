@@ -2,8 +2,9 @@
 
 class welcome extends controller
 {
-	function test()
+	function index()
 	{
-		echo 'test';
+		$response = array();
+		$this->load_view('index', $response);
 	}
 }
