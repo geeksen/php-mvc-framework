@@ -59,8 +59,6 @@ class msg_model extends model
 		return $this->db->affected_rows;
 	}
 
-
-
 	function update()
 	{
 		$this->db->query("UPDATE msg SET msgtext = '" . $this->escaped['msgtext'] . "', updatetime = NOW() WHERE msgseq = " . $this->escaped['msgseq']);
