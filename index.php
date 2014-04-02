@@ -50,12 +50,17 @@ class main
 		if (isset($this->path_info_exploded[2])) { $this->method     = $this->path_info_exploded[2]; $slice_offset++; }
 
 		$path = 'controller/' . $this->directory . '/' . $this->controller;
-		if (file_exists($path) && is_dir($path) && isset($this->path_info_exploded[3]))
+		if (file_exists($path) && is_dir($path))
 		{
 			$this->directory = $this->controller;
 			$this->controller = $this->method;
-			$this->method = $this->path_info_exploded[3];
-			$slice_offset++;
+			$this->method = 'index';
+
+			if (isset($this->path_info_exploded[3]) && '' != $this->path_info_exploded[3])
+			{
+				$this->method = $this->path_info_exploded[3];
+				$slice_offset++;
+			}
 		}
 
 		$this->path_info_exploded = array_slice($this->path_info_exploded, $slice_offset);
