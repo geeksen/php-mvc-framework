@@ -8,11 +8,24 @@ class model
 	function __construct(&$db, &$request)
 	{
 		$this->db = $db;
-
 		$this->db->set_charset('utf8');
-		foreach ($request as $key => $value)
+
+		$this->escaped = $this->real_escape_array($request);
+	}
+
+	function real_escape_array(&$array)
+	{
+		foreach ($array as $key => $value)
 		{
-			$this->escaped[$key] = $this->db->real_escape_string($value);
+			if (is_array($value))
+			{
+				$this->real_escape_array($value);
+				continue;
+			}
+			
+			$array[$key] = $this->db->real_escape_string($value);
 		}
+
+		return $array;
 	}
 }

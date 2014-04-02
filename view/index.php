@@ -1,5 +1,8 @@
-<!DOCTYPE html>
 
-<meta charset='utf-8'>
+<span class='right'><a href='http://www.geeksen.com'>Download Source</a></span>
 
-<a href='/dir/msg'>msg</a>
+<div class='clear'>
+<a href='/dir/board/'>Board</a>
+</div>
+
+</div>

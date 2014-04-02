@@ -4,12 +4,12 @@ class database extends mysqli
 {
 	var $config = array
 	(
-		'msgdb' => array
+		'pmf' => array
 		(
 			'server' => '127.0.0.1',
 			'userid' => 'root',
 			'passwd' => '1235',
-			'dbname' => 'msgdb',
+			'dbname' => 'pmf',
 			'dbport' => 3306,
 		),
 	);
