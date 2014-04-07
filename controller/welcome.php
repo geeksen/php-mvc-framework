@@ -6,7 +6,7 @@ class welcome extends controller
 	{
 		$response = array
 		(
-			'title' => 'Home',
+			'h2_title' => 'Home',
 		);
 	
 		$this->load_view('header', $response);

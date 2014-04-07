@@ -4,6 +4,18 @@ class controller
 {
 	var $path_info_exploded = array();
 
+	var $upload_path = '/home/ubuntu/github/php-mvc-framework/upload/';
+	var $upload_allowed = array
+	(
+		'image/png',
+		'image/gif',
+		'image/jpeg',
+	);
+
+	var $img_mimes = array('image/png', 'image/gif', 'image/jpeg');
+	var $png_mimes = array('image/x-png');
+	var $jpeg_mimes = array('image/jpe', 'image/jpg', 'image/pjpeg');
+
 	function __construct(&$path_info_exploded)
 	{
 		$this->path_info_exploded = $path_info_exploded;
@@ -42,52 +54,109 @@ class controller
 		return $request;
 	}
 
-	function input_upload()
+	function input_upload($path, $files)
 	{
+		$upload = array();
+		foreach ($files as $file)
+		{
+			$upload[$file] = '';
 
-<?php
-//엠비즈 for utf-8 detection
+			if (false === isset($_FILES[$file]['name']) || '' == $_FILES[$file]['name'] || 0 == $_FILES[$file]['size'])
+			{
+				continue;
+			}
 
-if ($f_mode == 'insert' || $f_mode == 'update') {
-	if ($f_mode == 'insert') { $v_filepath = $v_filepath . substr(date('Y-m-d'), 0, 7) . '/'; }
-	if ($f_mode == 'update') { $v_filepath = $v_filepath . substr($d_insertdate    , 0, 7) . '/'; }
-	if (!is_dir($v_filepath) && !mkdir($v_filepath)) { mysqli_close($dbconn_mbiz); echo '<font size=4 face=tahoma color=#ff0000>could not make directory</font>'; exit; }
+			$filename = $_FILES[$file]['name'];
+			$tmp_name = $_FILES[$file]['tmp_name'];
 
-	$f_filename = $_FILES['file']['name'];
-	if ($f_filename != '') {
-		if ($f_mode == 'update' && $d_filename != '' && file_exists($v_filepath . $d_filename) && !unlink($v_filepath . $d_filename)) { mysqli_close($dbconn_mbiz); print 'could not remove</font>'; exit; }
+			//$finfo = new finfo(FILEINFO_MIME);
+			//$mime = $finfo->file($file);
 
-		$f_filename = str_replace('.htm'  , '.txt', $f_filename);
-		$f_filename = str_replace('.html' , '.txt', $f_filename);
-		$f_filename = str_replace('.shtml', '.txt', $f_filename);
-		$f_filename = str_replace('.php'  , '.txt', $f_filename);
-		$f_filename = str_replace('.php3' , '.txt', $f_filename);
-		$f_filename = str_replace('.php4' , '.txt', $f_filename);
-		$f_filename = str_replace('.phtml', '.txt', $f_filename);
-		$f_filename = str_replace('.inc'  , '.txt', $f_filename);
-		$f_filename = str_replace('.pl'   , '.txt', $f_filename);
-		$f_filename = str_replace('.cgi'  , '.txt', $f_filename);
-		$f_filename = str_replace(' '     , '_'   , $f_filename);
+			if (false === function_exists('finfo_open'))
+			{
+				error_handler(1, 'finfo_open not found');
+			}
 
-		$i = 0;
-		$v_filename = $f_filename;
-		 while (file_exists($v_filepath . $f_filename)) {
-			$f_filename = $i . $v_filename;
-			$i++;
+			$finfo = finfo_open();
+			$mime = finfo_file($finfo, $tmp_name, FILEINFO_MIME);
+			finfo_close($finfo);
+			
+			$regexp = '/^([a-z\-]+\/[a-z0-9\-\.\+]+)(;\s.+)?$/';
+			if (is_string($mime) && preg_match($regexp, $mime, $matches))
+			{
+				$mime = $matches[1];
+				if (in_array($mime, $this->png_mimes))
+				{
+					$mime = 'image/png';
+				}
+
+				if (in_array($mime, $this->jpeg_mimes))
+				{
+					$mime = 'image/jpeg';
+				}
+
+				if (false === in_array($mime, $this->upload_allowed))
+				{
+					error_handler(1, 'upload not allowed');
+				}
+
+				if (in_array($mime, $this->img_mimes))
+				{
+					if (false === function_exists('getimagesize'))
+					{
+						error_handler(1, 'getimagesize not found');
+					}
+
+					if (false === getimagesize($tmp_name))
+					{
+						error_handler(1, 'getimagesize failed');
+					}
+					
+					if (false === ($handle = fopen($_FILES[$file]['tmp_name'], 'rb')))
+					{
+						error_handler(1, 'could not open tmp_name');
+					}
+
+					$opening_bytes = fread($handle, 256);
+					fclose($handle);
+
+					if (preg_match('/<(a|body|head|html|img|plaintext|pre|script|table|title)[\s>]/i', $opening_bytes))
+					{
+						error_handler(1, 'not an image');
+					}
+				}
+			}
+
+			$ext = substr(strrchr($filename, '.'), 0);
+			$filename = substr($filename, 0, strrpos($filename, '.'));
+
+			$i = 1;
+			$new_filename = $filename . $ext;
+		 	while ($i < 100 && file_exists($path . $new_filename))
+			{
+				$new_filename = $filename . '(' . $i . ')' . $ext;
+				$i++;
+			}
+
+			if (100 == $i)
+			{
+				error_handler(1, 'upload failed');
+			}
+
+			if (false === file_exists($path) && false === mkdir($path, 0755))
+			{
+				error_handler(1, 'mkdir failed');
+			}
+
+			if (is_uploaded_file($_FILES[$file]['tmp_name']) && false === move_uploaded_file($_FILES[$file]['tmp_name'], $path . $new_filename))
+			{
+				error_handler(1, 'upload failed');
+			}
+
+			$upload[$file] = $new_filename;
 		}
 
-		if (is_uploaded_file($_FILES['file']['tmp_name']) && !move_uploaded_file($_FILES['file']['tmp_name'], $v_filepath . $f_filename)) { mysqli_close($dbconn_mbiz); print 'could not upload'; exit; }
-	}
-	else {
-		if ($f_mode == 'update') { $f_filename = $d_filename; }
-	}
-}
-
-if ($s_userid == 'Steve' && $f_mode == 'delete' && $d_filename != '') {
-	$v_filepath = $v_filepath . substr($d_insertdate    , 0, 7) . '/';
-	if (file_exists($v_filepath . $d_filename) && !unlink($v_filepath . $d_filename)) { mysqli_close($dbconn_mbiz); echo '<font size=4 face=tahoma color=#ff0000>could not remove</font>'; exit; }
-}
-?>
+		return $upload;
 	}
 
 	function load_database($db)

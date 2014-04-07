@@ -10,6 +10,11 @@ class model
 		$this->db = $db;
 		$this->db->set_charset('utf8');
 
+		$this->escape_request($request);
+	}
+
+	function escape_request(&$request)
+	{
 		$this->escaped = $this->real_escape_array($request);
 	}
 
@@ -23,6 +28,9 @@ class model
 				continue;
 			}
 			
+			$value = str_replace('<', '&lt;', $value);
+			$value = str_replace('>', '&gt;', $value);
+
 			$array[$key] = $this->db->real_escape_string($value);
 		}
 

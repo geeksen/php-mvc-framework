@@ -1,16 +1,19 @@
 <?php
 
+//error_reporting(E_ALL);
+//set_error_handler('error_handler');
+date_default_timezone_set('Asia/Seoul');
+
 function error_handler($errno, $errstr)
 {
-	echo "<!DOCTYPE html>\n\n";
-	echo "<meta charset='utf-8'>\n";
-	echo '<h1>' . $errstr . '</h1>';
+	echo json_encode(array
+	(
+		'errno' => $errno,
+		'errstr' => $errstr,
+	));
 
 	exit;
 }
-
-//error_reporting(E_ALL);
-//set_error_handler('error_handler');
 
 class main
 {
@@ -44,7 +47,7 @@ class main
 		}
 
 		$slice_offset = 0;
-		$this->path_info_exploded = explode('/', $path_info);
+		$this->path_info_exploded = explode('/', rtrim($path_info, '/'));
 		if (isset($this->path_info_exploded[0])) { $this->directory  = $this->path_info_exploded[0]; $slice_offset++; }
 		if (isset($this->path_info_exploded[1])) { $this->controller = $this->path_info_exploded[1]; $slice_offset++; }
 		if (isset($this->path_info_exploded[2])) { $this->method     = $this->path_info_exploded[2]; $slice_offset++; }
@@ -69,9 +72,9 @@ class main
 	function load()
 	{
 		$path = 'controller/' . $this->directory . '/' . $this->controller;
-		if (!file_exists($path . '.php'))
+		if (false === file_exists($path . '.php'))
 		{
-			error_handler(404, 'not found');
+			error_handler(1, 'file not found');
 		}
 
 		require_once $path . '.php';
@@ -87,15 +90,15 @@ class main
 		$controller = $this->controller;
 		$method = $this->method;
 
-		if (!class_exists($controller))
+		if (false === class_exists($controller))
 		{
-			error_handler(404, 'not found');
+			error_handler(1, 'class not found');
 		}
 		$class = new $controller($this->path_info_exploded);
 
-		if (!method_exists($controller, $method))
+		if (false === method_exists($controller, $method))
 		{
-			error_handler(404, 'not found');
+			error_handler(1, 'method not found');
 		}
 		$class->$method();
 	}

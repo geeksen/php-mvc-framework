@@ -26,6 +26,7 @@
     <th>Title</th>
     <th>UserID</th>
     <th>UpdateTime</th>
+    <th>Show | Update | Delete</th>
   </tr>
 
 <?php foreach ($board_list as $row): ?>
@@ -34,6 +35,11 @@
     <td><?php echo $row->title ?></td>
     <td><?php echo $row->userid ?></td>
     <td><?php echo $row->updatetime ?></td>
+    <td>
+      <a href='/dir/board/show/<?php echo $page ?>/<?php echo $row->seq ?>'>Show</a> |
+      <a href='/dir/board/form/<?php echo $page ?>/<?php echo $row->seq ?>'>Update</a> |
+      <a href='/dir/board/delete/<?php echo $page ?>/<?php echo $row->seq ?>'>Delete</a>
+    </td>
   </tr>
 <?php endforeach ?>
 

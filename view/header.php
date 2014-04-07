@@ -63,4 +63,4 @@
 <body>
 <div class='root'>
 
-<h2 class='left'><?php echo $title ?></h2>
+<h2 class='left'><?php echo $h2_title ?></h2>

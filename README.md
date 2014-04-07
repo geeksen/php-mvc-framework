@@ -7,6 +7,7 @@ Install Apache2
 * sudo apt-get upgrade
 * sudo apt-get install apache2
 * sudo a2enmod rewrite
+* sudo a2enmod mime_magic
 
 * cd /etc/apache2/sites-enabled
 * sudo vi 000-default
