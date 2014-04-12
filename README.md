@@ -41,6 +41,8 @@ Install php-mvc-framework
 * mv .htaccess ..
 * cd ..
 * rmdir php-mvc-framework
+* mkdir upload
+* sudo chown www-data.www-data upload
 
 Run
 ---
