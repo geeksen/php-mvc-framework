@@ -73,12 +73,12 @@ class board_model extends model
 	{
 		$query = "SELECT count(*) as board_count FROM board";
 
-		if (true === array_key_exists($request['field'], $this->field_columns) && '' != $request['keyword'])
+		if (true === array_key_exists($this->escaped['field'], $this->field_columns) && '' != $this->escaped['keyword'])
                 {
-                        $query = "SELECT count(*) as board_count FROM board WHERE " . $this->field_columns[$request['field']] . " LIKE '%" . $request['keyword'] . "%'";
+                        $query = "SELECT count(*) as board_count FROM board WHERE " . $this->field_columns[$this->escaped['field']] . " LIKE '%" . $this->escaped['keyword'] . "%'";
                 }
 
-		$result = $this->db->qeury($query);
+		$result = $this->db->query($query);
 		$row = $result->fetch_object();
 
 		return $row->board_count;
@@ -96,7 +96,7 @@ class board_model extends model
 	{
 		$query = "INSERT INTO board (title, content, userid, file1, file2, inserttime, updatetime) VALUES";
 
-		$count = count($this->escaped['seq']);
+		$count = count($this->escaped['seqs']);
 		for ($i = 0; $i < $count; $i++)
 		{
 			$query .= "('" . $this->escaped['title'][$i] . "', '" . $this->escaped['content'][$i] . "', '" . $this->escaped['userid'][$i] . "', '" . $this->escaped['file1'][$i] . "', '" . $this->escaped['file2'][$i] . "', NOW(), NOW())";
@@ -122,14 +122,14 @@ class board_model extends model
 	function update_multiple()
 	{
 		$query = "UPDATE board SET";
-		$count = count($this->escaped['seq']);
+		$count = count($this->escaped['seqs']);
 
 		/* title */ if (1)
 		{
 			$query .= " title = CASE";
 			for ($i = 0; $i < $count; $i++)
 			{
-				$query .= " WHEN " . $this->escaped['seq'][$i] . " THEN '" . $this->escaped['title'][$i] . "'";
+				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['title'][$i] . "'";
 			}
 			$query .= " END, ";
 		}
@@ -139,7 +139,7 @@ class board_model extends model
 			$query .= " content = CASE";
 			for ($i = 0; $i < $count; $i++)
 			{
-				$query .= " WHEN " . $this->escaped['seq'][$i] . " THEN '" . $this->escaped['content'][$i] . "'";
+				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['content'][$i] . "'";
 			}
 			$query .= " END, ";
 		}
@@ -149,7 +149,7 @@ class board_model extends model
 			$query .= " file1 = CASE";
 			for ($i = 0; $i < $count; $i++)
 			{
-				$query .= " WHEN " . $this->escaped['seq'][$i] . " THEN '" . $this->escaped['file1'][$i] . "'";
+				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file1'][$i] . "'";
 			}
 			$query .= " END, ";
 		}
@@ -159,12 +159,12 @@ class board_model extends model
 			$query .= " file2 = CASE";
 			for ($i = 0; $i < $count; $i++)
 			{
-				$query .= " WHEN " . $this->escaped['seq'][$i] . " THEN '" . $this->escaped['file2'][$i] . "'";
+				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file2'][$i] . "'";
 			}
 			$query .= " END, ";
 		}
 
-		$query .= "userid = '" . $this->escaped['userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $this->escaped['seq']) . ")";
+		$query .= "userid = '" . $this->escaped['userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
 
 		$this->db->query($query);
 		return $this->db->affected_rows;
@@ -178,9 +178,9 @@ class board_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function delete_mutiple()
+	function delete_multiple()
 	{
-		$query = "DELETE FROM board WHERE seq in (" . implode(', ', $this->escaped['seq']) . ")";
+		$query = "DELETE FROM board WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
 
 		$this->db->query($query);
 		return $this->db->affected_rows;

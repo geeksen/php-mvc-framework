@@ -4,7 +4,7 @@
 <form method='post' action='/dir/board/post' enctype='multipart/form-data'>
 <table>
   <tr>
-    <th class='th-fixed-width'>title</th>
+    <th class='th-fixed-width'>Title</th>
     <td>
       <input type='hidden' name='seq' value='<?php echo $seq ?>'>
       <input type='hidden' name='page' value='<?php echo $page ?>'>
@@ -16,7 +16,7 @@
     </td>
   </tr>
   <tr>
-    <th>file1</th>
+    <th>File1</th>
     <td>
       <input type='file' name='file1'>
 <?php if ('' != $file1): ?>
@@ -25,7 +25,7 @@
     </td>
   </tr>
   <tr>
-    <th>file2</th>
+    <th>File2</th>
     <td>
       <input type='file' name='file2'>
 <?php if ('' != $file2): ?>
@@ -34,15 +34,15 @@
     </td>
   </tr>
   <tr>
-    <th>userid</th>
+    <th>UserID</th>
     <td><?php echo $userid ?></td>
   </tr>
   <tr>
-    <th>inserttime</th>
+    <th>InsertTime</th>
     <td><?php echo $inserttime ?></td>
   </tr>
   <tr>
-    <th>updatetime</th>
+    <th>UpdateTime</th>
     <td><?php echo $updatetime ?></td>
   </tr>
 </table>
@@ -67,4 +67,3 @@ window.onload = function() {
   }
 }
 </script>
-

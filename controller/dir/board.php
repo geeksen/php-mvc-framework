@@ -15,27 +15,30 @@ class board extends controller
 			'page' => 1,
 			'field' => 0,
 			'keyword' => '',
-			'per_page' => 10,
+			'per_page' => 3,
+			'link_count' => 3,
 		));
-
-		//if (0 == $request['page']) { $request['page'] = 1; }
 
 		$db = $this->load_database('pmf');
 
 		$board_model = $this->load_model($db, $request, 'dir/board_model');
+		$board_count = $board_model->select_count();
 		$board_list = $board_model->select_list();
 
 		$response = array
 		(
 			'h2_title' => 'Board :: Index',
-			'page' => $request['page'],
 
 			'field_columns' => $board_model->field_columns,
 			'field_names' => $board_model->field_names,
 			'page' => $request['page'],
 			'field' => $request['field'],
 			'keyword' => $request['keyword'],
+			'board_count' => $board_count,
 			'board_list' => $board_list,
+				//'per_page' => $request['per_page'],
+			'page_count' => (intval(($board_count - 1) / $request['per_page']) + 1),
+			'link_count' => $request['link_count'],
 		);
 
 		$this->load_view('header', $response);
@@ -68,7 +71,7 @@ class board extends controller
 
 			'seq' => $board_info->seq,
 			'title' => $board_info->title,
-			'content' => $board_info->content,
+			'content' => str_replace(array("\r\n", "\n", "\r"), "<br>\n", $board_info->content),
 			'file1' => $board_info->file1,
 			'file2' => $board_info->file2,
 			'userid' => $board_info->userid,
@@ -292,5 +295,32 @@ class board extends controller
 
 	function batch()
 	{
+	
+		$request = $this->input_post(array
+		(
+			'seqs' => array(),
+			'delete_multiple' => '',
+		));
+		$request['seqs'] = array_map('intval', $request['seqs']);
+
+		if (0 == count($request['seqs']))
+		{
+			error_handler(1, 'seqs required');
+		}
+
+		$db = $this->load_database('pmf');
+		$board_model = $this->load_model($db, $request, 'dir/board_model');
+
+		if ('' != $request['delete_multiple'])
+		{
+			$affected_rows = $board_model->delete_multiple();
+
+			if (0 == $affected_rows)
+			{
+				error_handler(1, 'no affected_rows');
+			}
+		}
+
+		$this->redirect_to('/dir/board/index');
 	}
 }
