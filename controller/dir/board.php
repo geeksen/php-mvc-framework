@@ -15,8 +15,8 @@ class board extends controller
 			'page' => 1,
 			'field' => 0,
 			'keyword' => '',
-			'per_page' => 3,
-			'link_count' => 3,
+			'per_page' => 10,
+			'link_count' => 10,
 		));
 
 		$db = $this->load_database('pmf');
@@ -36,7 +36,6 @@ class board extends controller
 			'keyword' => $request['keyword'],
 			'board_count' => $board_count,
 			'board_list' => $board_list,
-				//'per_page' => $request['per_page'],
 			'page_count' => (intval(($board_count - 1) / $request['per_page']) + 1),
 			'link_count' => $request['link_count'],
 		);
