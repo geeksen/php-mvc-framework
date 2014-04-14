@@ -121,36 +121,18 @@ class board_model extends model
 
 	function update_multiple()
 	{
-		$query = "UPDATE board SET";
+		$query = "UPDATE board SET ";
 		$count = count($this->escaped['seqs']);
 
-		$query .= " title = CASE seq";
-		for ($i = 0; $i < $count; $i++)
+		foreach (array('title', 'content', 'file1', 'file2') as $field)
 		{
-			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['title'][$i] . "'";
+			$query .= $field . " = CASE seq";
+			for ($i = 0; $i < $count; $i++)
+			{
+				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped[$field][$i] . "'";
+			}
+			$query .= " END, ";
 		}
-		$query .= " END, ";
-
-		$query .= " content = CASE seq";
-		for ($i = 0; $i < $count; $i++)
-		{
-			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['content'][$i] . "'";
-		}
-		$query .= " END, ";
-
-		$query .= " file1 = CASE seq";
-		for ($i = 0; $i < $count; $i++)
-		{
-			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file1'][$i] . "'";
-		}
-		$query .= " END, ";
-
-		$query .= " file2 = CASE seq";
-		for ($i = 0; $i < $count; $i++)
-		{
-			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file2'][$i] . "'";
-		}
-		$query .= " END, ";
 
 		$query .= "userid = '" . $this->escaped['userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
 
