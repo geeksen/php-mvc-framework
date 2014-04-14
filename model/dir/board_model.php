@@ -124,45 +124,33 @@ class board_model extends model
 		$query = "UPDATE board SET";
 		$count = count($this->escaped['seqs']);
 
-		/* title */ if (1)
+		$query .= " title = CASE seq";
+		for ($i = 0; $i < $count; $i++)
 		{
-			$query .= " title = CASE";
-			for ($i = 0; $i < $count; $i++)
-			{
-				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['title'][$i] . "'";
-			}
-			$query .= " END, ";
+			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['title'][$i] . "'";
 		}
+		$query .= " END, ";
 
-		/* content */ if (1)
+		$query .= " content = CASE seq";
+		for ($i = 0; $i < $count; $i++)
 		{
-			$query .= " content = CASE";
-			for ($i = 0; $i < $count; $i++)
-			{
-				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['content'][$i] . "'";
-			}
-			$query .= " END, ";
+			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['content'][$i] . "'";
 		}
+		$query .= " END, ";
 
-		/* file1 */ if (1)
+		$query .= " file1 = CASE seq";
+		for ($i = 0; $i < $count; $i++)
 		{
-			$query .= " file1 = CASE";
-			for ($i = 0; $i < $count; $i++)
-			{
-				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file1'][$i] . "'";
-			}
-			$query .= " END, ";
+			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file1'][$i] . "'";
 		}
+		$query .= " END, ";
 
-		/* file2 */ if (1)
+		$query .= " file2 = CASE seq";
+		for ($i = 0; $i < $count; $i++)
 		{
-			$query .= " file2 = CASE";
-			for ($i = 0; $i < $count; $i++)
-			{
-				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file2'][$i] . "'";
-			}
-			$query .= " END, ";
+			$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped['file2'][$i] . "'";
 		}
+		$query .= " END, ";
 
 		$query .= "userid = '" . $this->escaped['userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
 
