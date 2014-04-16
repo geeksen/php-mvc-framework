@@ -31,8 +31,7 @@ class board_model extends model
 	{
 		$query = "SELECT * FROM board WHERE seq = " . $this->escaped['seq'] . " LIMIT 0, 1";
 
-		$result = $this->db->query($query);
-		return $result->fetch_object();
+		return $this->db->query($query);
 	}
 
 	function select_list()
@@ -99,7 +98,7 @@ class board_model extends model
 		$count = count($this->escaped['seqs']);
 		for ($i = 0; $i < $count; $i++)
 		{
-			$query .= "('" . $this->escaped['title'][$i] . "', '" . $this->escaped['content'][$i] . "', '" . $this->escaped['userid'][$i] . "', '" . $this->escaped['file1'][$i] . "', '" . $this->escaped['file2'][$i] . "', NOW(), NOW())";
+			$query .= "('" . $this->escaped['titles'][$i] . "', '" . $this->escaped['contents'][$i] . "', '" . $this->escaped['userids'][$i] . "', '" . $this->escaped['file1s'][$i] . "', '" . $this->escaped['file2s'][$i] . "', NOW(), NOW())";
 
 			if ($i < ($count - 1))
 			{
@@ -124,7 +123,7 @@ class board_model extends model
 		$query = "UPDATE board SET ";
 		$count = count($this->escaped['seqs']);
 
-		foreach (array('title', 'content', 'file1', 'file2') as $field)
+		foreach (array('titles', 'contents', 'file1s', 'file2s') as $field)
 		{
 			$query .= $field . " = CASE seq";
 			for ($i = 0; $i < $count; $i++)

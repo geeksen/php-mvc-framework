@@ -2,7 +2,7 @@
 
 class controller
 {
-	var $path_info_exploded = array();
+	var $path_info = array();
 
 	var $upload_path = '/home/ubuntu/github/php-mvc-framework/upload/';
 	var $upload_allowed = array
@@ -16,9 +16,9 @@ class controller
 	var $png_mimes = array('image/x-png');
 	var $jpeg_mimes = array('image/jpe', 'image/jpg', 'image/pjpeg');
 
-	function __construct(&$path_info_exploded)
+	function __construct(&$path_info)
 	{
-		$this->path_info_exploded = $path_info_exploded;
+		$this->path_info = $path_info;
 	}
 
 	function input_get($request)
@@ -26,7 +26,7 @@ class controller
 		$i = 0;
 		foreach ($request as $key => $value)
 		{
-			$request[$key] = isset($this->path_info_exploded[$i]) ? $this->path_info_exploded[$i] : $value;
+			$request[$key] = isset($this->path_info[$i]) ? $this->path_info[$i] : $value;
 
 			if (0 === $value)
 			{
@@ -61,7 +61,7 @@ class controller
 		{
 			$upload[$file] = '';
 
-			if (false === isset($_FILES[$file]['name']) || '' == $_FILES[$file]['name'] || 0 == $_FILES[$file]['size'])
+			if (!isset($_FILES[$file]['name']) || '' == $_FILES[$file]['name'] || 0 == $_FILES[$file]['size'])
 			{
 				continue;
 			}
@@ -72,7 +72,7 @@ class controller
 			//$finfo = new finfo(FILEINFO_MIME);
 			//$mime = $finfo->file($file);
 
-			if (false === function_exists('finfo_open'))
+			if (!function_exists('finfo_open'))
 			{
 				error_handler(1, 'finfo_open not found');
 			}
@@ -95,14 +95,14 @@ class controller
 					$mime = 'image/jpeg';
 				}
 
-				if (false === in_array($mime, $this->upload_allowed))
+				if (!in_array($mime, $this->upload_allowed))
 				{
 					error_handler(1, 'upload not allowed');
 				}
 
 				if (in_array($mime, $this->img_mimes))
 				{
-					if (false === function_exists('getimagesize'))
+					if (!function_exists('getimagesize'))
 					{
 						error_handler(1, 'getimagesize not found');
 					}
@@ -143,12 +143,12 @@ class controller
 				error_handler(1, 'upload failed');
 			}
 
-			if (false === file_exists($path) && false === mkdir($path, 0755))
+			if (!file_exists($path) && !mkdir($path, 0755))
 			{
 				error_handler(1, 'mkdir failed');
 			}
 
-			if (is_uploaded_file($_FILES[$file]['tmp_name']) && false === move_uploaded_file($_FILES[$file]['tmp_name'], $path . $new_filename))
+			if (is_uploaded_file($_FILES[$file]['tmp_name']) && !move_uploaded_file($_FILES[$file]['tmp_name'], $path . $new_filename))
 			{
 				error_handler(1, 'upload failed');
 			}
@@ -168,7 +168,7 @@ class controller
 	{
 		require_once 'library/' . $library . '.php';
 
-		$library = basename($path);
+		$library = basename($library);
 		return new $library();
 	}
 
@@ -193,5 +193,7 @@ class controller
 	function redirect_to($uri)
 	{
 		header('Refresh:0; url=' . $uri);
+
+		exit;
 	}
 }

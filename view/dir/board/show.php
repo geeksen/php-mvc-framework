@@ -8,7 +8,7 @@
     <td><?php echo $title ?></td>
   </tr>
   <tr>
-    <td colspan='2'><?php $content ?></td>
+    <td colspan='2'><?php echo $content ?></td>
   </tr>
   <tr>
     <th>File1</th>

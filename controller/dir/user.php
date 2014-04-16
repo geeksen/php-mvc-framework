@@ -1,132 +1,118 @@
 <?php
 
-class msg extends controller
+class user extends controller
 {
-	function index()
+	var $session;
+
+	function __construct()
 	{
-		$request = $this->input_get(array
-		(
-			'page' => 1,
-			'field' => 0,
-			'keyword' => '',
-			'per_page' => 10,
-		));
+		$this->session = $this->load_library('session');
+	}
 
-		$db = $this->load_database('msgdb');
-
-		$msg_model = $this->load_model($db, $request, 'dir/msg_model');
-		$msg_list = $msg_model->select_list();
-
+	function signin()
+	{
 		$response = array
 		(
-			'msg_list' => $msg_list,
+			'h2_title' => 'Sign In',
 		);
 
-		$this->load_view('dir/msg/index', $response);
+		$this->load_view('header', $response);
+		$this->load_view('dir/user/signin', $response);
+		$this->load_view('footer', $response);
 	}
 
-	function view()
+	function signup()
 	{
-		$request = $this->input_get(array
-		(
-			'msgseq' => 1,
-		));
-
-		if (0 == $request['msgseq'])
-		{
-			error_handler('msgseq is required');
-		}
-
-		$db = $this->load_database('msgdb');
-
-		$msg_model = $this->load_model($db, $request, 'dir/msg_model');
-		$msg_info = $msg_model->select_info();
-
 		$response = array
 		(
-			'msgseq' => $msg_info->msgseq,
-			'msgtext' => $msg_info->msgtext,
+			'h2_title' => 'Sign Up',
 		);
 
-		$this->load_view('dir/msg/view', $response);
+		$this->load_view('header', $response);
+		$this->load_view('dir/user/signup', $response);
+		$this->load_view('footer', $response);
 	}
 
-	function form()
+	function signout()
 	{
-		$request = $this->input_get(array
+		$this->session->set(array
 		(
-			'msgseq' => 0,
+			'userid' => '',
 		));
 
-		$response = array
-		(
-			'msgseq' => 0,
-			'msgtext' => '',
-		);
-
-		if (0 < $request['msgseq'])
-		{
-			$db = $this->load_database('msgdb');
-
-			$msg_model = $this->load_model($db, $request, 'dir/msg_model');
-			$msg_info = $msg_model->select_info();
-
-			$response = array_merge(array
-			(
-				'msgseq' => $msg_info->msgseq,
-				'msgtext' => $msg_info->msgtext,
-			));
-		}
-
-		$this->load_view('dir/msg/form', $response);
+		$this->redirect_to('/dir/board/index');
 	}
 
-	function exec_get()
-	{
-		$request = $this->input_get(array
-		(
-			'msgseq' => 0,
-		));
-
-		$db = $this->load_database('msgdb');
-
-		$msg_model = $this->load_model($db, $request, 'dir/msg_model');
-		$affected_rows = $msg_model->delete();
-
-		if (0 == $affected_rows)
-		{
-			error_handler('failed to delete');
-		}
-
-		$this->redirect_to('/dir/msg/index');
-	}
-
-	function exec_post()
+	function auth()
 	{
 		$request = $this->input_post(array
 		(
-			'msgseq' => 0,
-			'msgtext' => '',
+			'userid' => '',
+			'passwd' => '',
 		));
 
-		$db = $this->load_database('msgdb');
-		$msg_model = $this->load_model($db, $request, 'dir/msg_model');
-
-		$affected_rows = 0;
-		if (0 == $request['msgseq'])
+		if ('' == $request['userid'])
 		{
-			$affected_rows = $msg_model->insert();
-		}
-		else
-		{
-			$affected_rows = $msg_model->update();
+			error_handler(1, 'userid required');
 		}
 
-		if (0 == $affected_rows)
+		if ('' == $request['passwd'])
 		{
-			error_handler('failed to exec_post');
+			error_handler(1, 'passwd required');
 		}
 
-		$this->redirect_to('/dir/msg/index');
+		$request['passwd'] = md5($request['passwd']);
+
+		$db = $this->load_database('pmf');
+		$user_model = $this->load_model($db, $request, 'dir/user_model');
+		$result = $user_model->select_info_by_userid_and_passwd();
+
+		if (0 == $result->num_rows)
+		{
+			error_handler(1, 'auth failed');
+		}
+
+		$user_info = $result->fetch_object();
+
+		$this->session->set(array
+		(
+			'userid' => $user_info->userid,
+		));
+
+		$this->redirect_to('/dir/board/index');
+	}
+
+	function post()
+	{
+		$request = $this->input_post(array
+		(
+			'userid' => '',
+			'passwd' => '',
+			'retypepasswd' => '',
+		));
+
+		if ('' == $request['userid'])
+		{
+			error_handler(1, 'userid required');
+		}
+
+		if ($request['passwd'] != $request['retypepasswd'])
+		{
+			error_handler(1, 'retype passwd');
+		}
+
+		$request['passwd'] = md5($request['passwd']);
+
+		$db = $this->load_database('pmf');
+		$user_model = $this->load_model($db, $request, 'dir/user_model');
+
+		$affected_rows = $user_model->insert();
+
+		if (1 != $affected_rows)
+		{
+			error_handler(1, 'insufficient affected_rows');
+		}
+
+		$this->redirect_to('/dir/user/signin');
 	}
 }

@@ -2,11 +2,25 @@
 
 class board extends controller
 {
+	var $session;
+
 	var $files = array
 	(
 		'file1',
 		'file2',
 	);
+
+	function __construct(&$path_info)
+	{
+		parent::__construct($path_info);
+
+		$this->session = $this->load_library('session');
+
+		if ('' == $this->session->get('userid'))
+		{
+			$this->redirect_to('/dir/user/signin');
+		}
+	}
 
 	function index()
 	{
@@ -61,7 +75,8 @@ class board extends controller
 		$db = $this->load_database('pmf');
 
 		$board_model = $this->load_model($db, $request, 'dir/board_model');
-		$board_info = $board_model->select_info();
+		$result = $board_model->select_info();
+		$board_info = $result->fetch_object();
 
 		$response = array
 		(
@@ -111,7 +126,8 @@ class board extends controller
 			$db = $this->load_database('pmf');
 
 			$board_model = $this->load_model($db, $request, 'dir/board_model');
-			$board_info = $board_model->select_info();
+			$result = $board_model->select_info();
+			$board_info = $result->fetch_object();
 
 			$response = array_merge($response, array
 			(
@@ -147,7 +163,8 @@ class board extends controller
 		$db = $this->load_database('pmf');
 
 		$board_model = $this->load_model($db, $request, 'dir/board_model');
-		$board_info = $board_model->select_info();
+		$result = $board_model->select_info();
+		$board_info = $result->fetch_object();
 
 		$response = array
 		(
@@ -185,9 +202,9 @@ class board extends controller
 
 		$affected_rows = $board_model->delete();
 
-		if (0 == $affected_rows)
+		if (1 != $affected_rows)
 		{
-			error_handler(1, 'no affected_rows');
+			error_handler(1, 'insufficient affected_rows');
 		}
 
 		$this->redirect_to('/dir/board/index');
@@ -225,7 +242,8 @@ class board extends controller
 
 		if (0 != $request['seq'])
 		{
-			$board_info = $board_model->select_info();
+			$result = $board_model->select_info();
+			$board_info = $result->fetch_object();
 
 			$response = array_merge($response, array
 			(
@@ -284,9 +302,9 @@ class board extends controller
 			$affected_rows = $board_model->insert();
 		}
 
-		if (0 == $affected_rows)
+		if (1 != $affected_rows)
 		{
-			error_handler(1, 'no affected_rows');
+			error_handler(1, 'insufficient affected_rows');
 		}
 
 		$this->redirect_to('/dir/board/index');
@@ -314,9 +332,9 @@ class board extends controller
 		{
 			$affected_rows = $board_model->delete_multiple();
 
-			if (0 == $affected_rows)
+			if (count($request['seqs']) != $affected_rows)
 			{
-				error_handler(1, 'no affected_rows');
+				error_handler(1, 'insufficient affected_rows');
 			}
 		}
 

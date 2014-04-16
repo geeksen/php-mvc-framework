@@ -17,7 +17,7 @@ function error_handler($errno, $errstr)
 
 class main
 {
-	var $path_info_exploded = array();
+	var $path_info = array();
 
 	var $directory = '';
 	var $controller = '';
@@ -35,22 +35,22 @@ class main
 
 	function parse()
 	{
-		$path_info = '';
+		$PATH_INFO = '';
 		if ('cli' == php_sapi_name())
 		{
 			$args = array_slice($_SERVER['argv'], 1);
-			$path_info = $args ? '/' . implode('/', $args) : '';
+			$PATH_INFO = $args ? '/' . implode('/', $args) : '';
 		}
 		else if (isset($_SERVER['PATH_INFO']))
 		{
-			$path_info = $_SERVER['PATH_INFO'];
+			$PATH_INFO = $_SERVER['PATH_INFO'];
 		}
 
 		$slice_offset = 0;
-		$this->path_info_exploded = explode('/', rtrim($path_info, '/'));
-		if (isset($this->path_info_exploded[0])) { $this->directory  = $this->path_info_exploded[0]; $slice_offset++; }
-		if (isset($this->path_info_exploded[1])) { $this->controller = $this->path_info_exploded[1]; $slice_offset++; }
-		if (isset($this->path_info_exploded[2])) { $this->method     = $this->path_info_exploded[2]; $slice_offset++; }
+		$this->path_info = explode('/', rtrim($PATH_INFO, '/'));
+		if (isset($this->path_info[0])) { $this->directory  = $this->path_info[0]; $slice_offset++; }
+		if (isset($this->path_info[1])) { $this->controller = $this->path_info[1]; $slice_offset++; }
+		if (isset($this->path_info[2])) { $this->method     = $this->path_info[2]; $slice_offset++; }
 
 		$path = 'controller/' . $this->directory . '/' . $this->controller;
 		if (file_exists($path) && is_dir($path))
@@ -59,14 +59,14 @@ class main
 			$this->controller = $this->method;
 			$this->method = 'index';
 
-			if (isset($this->path_info_exploded[3]) && '' != $this->path_info_exploded[3])
+			if (isset($this->path_info[3]) && '' != $this->path_info[3])
 			{
-				$this->method = $this->path_info_exploded[3];
+				$this->method = $this->path_info[3];
 				$slice_offset++;
 			}
 		}
 
-		$this->path_info_exploded = array_slice($this->path_info_exploded, $slice_offset);
+		$this->path_info = array_slice($this->path_info, $slice_offset);
 	}
 
 	function load()
@@ -94,7 +94,7 @@ class main
 		{
 			error_handler(1, 'class not found');
 		}
-		$class = new $controller($this->path_info_exploded);
+		$class = new $controller($this->path_info);
 
 		if (false === method_exists($controller, $method))
 		{

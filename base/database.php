@@ -16,6 +16,11 @@ class database extends mysqli
 
 	function __construct(&$db)
 	{
+		if (!array_key_exists($db, $this->config))
+		{
+			error_handler(1, 'database config not found');
+		}
+
 		parent::__construct($this->config[$db]['server'], $this->config[$db]['userid'], $this->config[$db]['passwd'], $this->config[$db]['dbname'], $this->config[$db]['dbport']);
 	}
 }
