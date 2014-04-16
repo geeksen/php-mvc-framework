@@ -72,7 +72,7 @@ class main
 	function load()
 	{
 		$path = 'controller/' . $this->directory . '/' . $this->controller;
-		if (false === file_exists($path . '.php'))
+		if (!file_exists($path . '.php'))
 		{
 			error_handler(1, 'file not found');
 		}
@@ -90,13 +90,13 @@ class main
 		$controller = $this->controller;
 		$method = $this->method;
 
-		if (false === class_exists($controller))
+		if (!class_exists($controller))
 		{
 			error_handler(1, 'class not found');
 		}
 		$class = new $controller($this->path_info);
 
-		if (false === method_exists($controller, $method))
+		if (!method_exists($controller, $method))
 		{
 			error_handler(1, 'method not found');
 		}
