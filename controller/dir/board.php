@@ -32,7 +32,8 @@ class board extends controller
 			'per_page' => 10,
 			'link_count' => 10,
 		));
-
+		$request['sess_userid'] = $this->session->get('userid');
+		
 		$db = $this->load_database('pmf');
 
 		$board_model = $this->load_model($db, $request, 'dir/board_model');
@@ -41,6 +42,7 @@ class board extends controller
 
 		$response = array
 		(
+			'sess_userid' => $request['sess_userid'],
 			'h2_title' => 'Board :: Index',
 
 			'field_columns' => $board_model->field_columns,
@@ -48,8 +50,10 @@ class board extends controller
 			'page' => $request['page'],
 			'field' => $request['field'],
 			'keyword' => $request['keyword'],
+
 			'board_count' => $board_count,
 			'board_list' => $board_list,
+
 			'page_count' => (intval(($board_count - 1) / $request['per_page']) + 1),
 			'link_count' => $request['link_count'],
 		);
@@ -66,6 +70,7 @@ class board extends controller
 			'page' => 1,
 			'seq' => 1,
 		));
+		$request['sess_userid'] = $this->session->get('userid');
 
 		if (0 == $request['seq'])
 		{
@@ -80,6 +85,7 @@ class board extends controller
 
 		$response = array
 		(
+			'sess_userid' => $request['sess_userid'],
 			'h2_title' => 'Board :: Show',
 			'page' => $request['page'],
 
@@ -105,9 +111,11 @@ class board extends controller
 			'page' => 1,
 			'seq' => 0,
 		));
+		$request['sess_userid'] = $this->session->get('userid');
 
 		$response = array
 		(
+			'sess_userid' => $request['sess_userid'],
 			'h2_title' => 'Board :: Form',
 			'page' => $request['page'],
 
@@ -154,6 +162,7 @@ class board extends controller
 			'page' => 1,
 			'seq' => 0,
 		));
+		$request['sess_userid'] = $this->session->get('userid');
 
 		if (0 == $request['seq'])
 		{
@@ -168,6 +177,7 @@ class board extends controller
 
 		$response = array
 		(
+			'sess_userid' => $request['sess_userid'],
 			'h2_title' => 'Board :: Show',
 			'page' => $request['page'],
 
@@ -222,9 +232,11 @@ class board extends controller
 			'file2' => '',
 			'userid' => '',
 		));
+		$request['sess_userid'] = $this->session->get('userid');
 
 		$response = array
 		(
+			'sess_userid' => $request['sess_userid'],
 			'page' => $request['page'],
 
 			'seq' => 0,
@@ -318,6 +330,7 @@ class board extends controller
 			'seqs' => array(),
 			'delete_multiple' => '',
 		));
+		$request['sess_userid'] = $this->session->get('userid');
 		$request['seqs'] = array_map('intval', $request['seqs']);
 
 		if (0 == count($request['seqs']))

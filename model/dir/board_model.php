@@ -85,7 +85,7 @@ class board_model extends model
 
 	function insert()
 	{
-		$query = "INSERT INTO board (title, content, userid, file1, file2, inserttime, updatetime) VALUES ('" . $this->escaped['title'] . "', '" . $this->escaped['content'] . "', '" . $this->escaped['userid'] . "', '" . $this->escaped['file1'] . "', '" . $this->escaped['file2'] . "', NOW(), NOW())";
+		$query = "INSERT INTO board (title, content, file1, file2, userid, inserttime, updatetime) VALUES ('" . $this->escaped['title'] . "', '" . $this->escaped['content'] . "', '" . $this->escaped['file1'] . "', '" . $this->escaped['file2'] . "', '" . $this->escaped['sess_userid'] . "', NOW(), NOW())";
 
 		$this->db->query($query);
 		return $this->db->affected_rows;
@@ -93,12 +93,12 @@ class board_model extends model
 
 	function insert_multiple()
 	{
-		$query = "INSERT INTO board (title, content, userid, file1, file2, inserttime, updatetime) VALUES";
+		$query = "INSERT INTO board (title, content, file1, file2, userid, inserttime, updatetime) VALUES";
 
 		$count = count($this->escaped['seqs']);
 		for ($i = 0; $i < $count; $i++)
 		{
-			$query .= "('" . $this->escaped['titles'][$i] . "', '" . $this->escaped['contents'][$i] . "', '" . $this->escaped['userids'][$i] . "', '" . $this->escaped['file1s'][$i] . "', '" . $this->escaped['file2s'][$i] . "', NOW(), NOW())";
+			$query .= "('" . $this->escaped['titles'][$i] . "', '" . $this->escaped['contents'][$i] . "', '" . $this->escaped['file1s'][$i] . "', '" . $this->escaped['file2s'][$i] . "', '" . $this->escaped['sess_userids'][$i] . "', NOW(), NOW())";
 
 			if ($i < ($count - 1))
 			{
@@ -112,7 +112,7 @@ class board_model extends model
 
 	function update()
 	{
-		$query = "UPDATE board SET title = '" . $this->escaped['title'] . "', content = '" . $this->escaped['content'] . "', userid = '" . $this->escaped['userid'] . "', file1 = '" . $this->escaped['file1'] . "', file2 = '" . $this->escaped['file2'] . "', updatetime = NOW() WHERE seq = " . $this->escaped['seq'];
+		$query = "UPDATE board SET title = '" . $this->escaped['title'] . "', content = '" . $this->escaped['content'] . "', file1 = '" . $this->escaped['file1'] . "', file2 = '" . $this->escaped['file2'] . "', userid = '" . $this->escaped['sess_userid'] . "', updatetime = NOW() WHERE seq = " . $this->escaped['seq'];
 
 		$this->db->query($query);
 		return $this->db->affected_rows;
@@ -133,7 +133,7 @@ class board_model extends model
 			$query .= " END, ";
 		}
 
-		$query .= "userid = '" . $this->escaped['userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
+		$query .= "userid = '" . $this->escaped['sess_userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
 
 		$this->db->query($query);
 		return $this->db->affected_rows;
@@ -141,7 +141,7 @@ class board_model extends model
 
 	function delete()
 	{
-		$query = "DELETE FROM board WHERE seq = " . $this->escaped['seq'];
+		$query = "DELETE FROM board WHERE seq = " . $this->escaped['seq'] . " AND userid = '" . $this->escaped['sess_userid'] . "'";
 
 		$this->db->query($query);
 		return $this->db->affected_rows;
@@ -149,7 +149,7 @@ class board_model extends model
 
 	function delete_multiple()
 	{
-		$query = "DELETE FROM board WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
+		$query = "DELETE FROM board WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ") AND userid = '" . $this->escaped['sess_userid'] . "'";
 
 		$this->db->query($query);
 		return $this->db->affected_rows;

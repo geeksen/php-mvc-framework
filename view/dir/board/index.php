@@ -1,5 +1,5 @@
 
-<span class='right'><a href='/dir/sign/out'>SignOut</a></span>
+<span class='right'><a href='/dir/user/signout'>SignOut</a></span>
 
 <form id='form_search' action='/dir/board/index'>
 <div class='nav-top'>

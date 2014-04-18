@@ -2,7 +2,6 @@
 
 //error_reporting(E_ALL);
 //set_error_handler('error_handler');
-date_default_timezone_set('Asia/Seoul');
 
 function error_handler($errno, $errstr)
 {
@@ -15,7 +14,7 @@ function error_handler($errno, $errstr)
 	exit;
 }
 
-class main
+class application
 {
 	var $path_info = array();
 
@@ -23,8 +22,10 @@ class main
 	var $controller = '';
 	var $method = '';
 
-	function init()
+	function __construct()
 	{
+		date_default_timezone_set('Asia/Seoul');
+
 		require_once 'base/database.php';
 		require_once 'base/model.php';
 		require_once 'base/controller.php';
@@ -80,9 +81,8 @@ class main
 		require_once $path . '.php';
 	}
 
-	function exec()
+	function main()
 	{
-		$this->init();
 		$this->parse();
 		$this->load();
 
@@ -104,5 +104,5 @@ class main
 	}
 }
 
-$main = new main();
-$main->exec();
+$application = new application();
+$application->main();

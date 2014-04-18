@@ -1,5 +1,5 @@
 
-<span class='right'><a href='/dir/sign/out'>SignOut</a></span>
+<span class='right'><a href='/dir/user/signout'>SignOut</a></span>
 
 <form method='post'>
 <table>
