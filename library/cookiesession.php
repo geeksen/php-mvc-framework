@@ -1,6 +1,6 @@
 <?php
 
-class session
+class cookiesession
 {
 	var $encrypt_key = 'too_many_secrets';
 	var $cookie_name = 'pmf_session';
