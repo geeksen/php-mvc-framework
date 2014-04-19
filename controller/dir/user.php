@@ -35,13 +35,6 @@ class user extends controller
 
 	function signout()
 	{
-		/*
-		$this->session->set(array
-		(
-			'userid' => '',
-		));
-		*/
-
 		$this->session->destroy();
 
 		$this->redirect_to('/dir/board/index');

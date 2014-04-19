@@ -16,7 +16,7 @@ class board extends controller
 
 		$this->session = $this->load_library('session');
 
-		if ('' == $this->session->get('userid'))
+		if ('' == $this->session->data('userid'))
 		{
 			$this->redirect_to('/dir/user/signin');
 		}
@@ -32,7 +32,7 @@ class board extends controller
 			'per_page' => 10,
 			'link_count' => 10,
 		));
-		$request['sess_userid'] = $this->session->get('userid');
+		$request['sess_userid'] = $this->session->data('userid');
 		
 		$db = $this->load_database('pmf');
 
@@ -70,7 +70,7 @@ class board extends controller
 			'page' => 1,
 			'seq' => 1,
 		));
-		$request['sess_userid'] = $this->session->get('userid');
+		$request['sess_userid'] = $this->session->data('userid');
 
 		if (0 == $request['seq'])
 		{
@@ -111,7 +111,7 @@ class board extends controller
 			'page' => 1,
 			'seq' => 0,
 		));
-		$request['sess_userid'] = $this->session->get('userid');
+		$request['sess_userid'] = $this->session->data('userid');
 
 		$response = array
 		(
@@ -162,7 +162,7 @@ class board extends controller
 			'page' => 1,
 			'seq' => 0,
 		));
-		$request['sess_userid'] = $this->session->get('userid');
+		$request['sess_userid'] = $this->session->data('userid');
 
 		if (0 == $request['seq'])
 		{
@@ -232,7 +232,7 @@ class board extends controller
 			'file2' => '',
 			'userid' => '',
 		));
-		$request['sess_userid'] = $this->session->get('userid');
+		$request['sess_userid'] = $this->session->data('userid');
 
 		$response = array
 		(
@@ -330,7 +330,7 @@ class board extends controller
 			'seqs' => array(),
 			'delete_multiple' => '',
 		));
-		$request['sess_userid'] = $this->session->get('userid');
+		$request['sess_userid'] = $this->session->data('userid');
 		$request['seqs'] = array_map('intval', $request['seqs']);
 
 		if (0 == count($request['seqs']))

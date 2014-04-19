@@ -49,9 +49,15 @@ class session
 		}
 	}
 
-	function get($key)
+	function destory()
 	{
-		return isset($_SESSION[$key]) ? $_SESSION[$key] : '';
+		$_SESSION = array();
+
+		if (isset($_COOKIE[session_name()]))
+		{
+			setcookie(session_name(), '', 0, '/');
+		}
+		session_destroy();
 	}
 
 	function set($data)
@@ -64,14 +70,8 @@ class session
 		$_SESSION = array_merge($_SESSION, $data);
 	}
 
-	function destroy()
+	function data($key)
 	{
-		$_SESSION = array();
-
-		if (isset($_COOKIE[session_name()]))
-		{
-			setcookie(session_name(), '', 0, '/');
-		}
-		session_destroy();
+		return isset($_SESSION[$key]) ? $_SESSION[$key] : '';
 	}
 }
