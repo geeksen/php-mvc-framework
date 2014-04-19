@@ -49,7 +49,7 @@ class session
 		}
 	}
 
-	function destory()
+	function destroy()
 	{
 		$_SESSION = array();
 
