@@ -27,7 +27,10 @@ class model
 				$this->real_escape_array($value);
 				continue;
 			}
-			
+
+			# for hander_socket
+			$value = str_replace("\t", ' ', $value);
+
 			$value = str_replace('<', '&lt;', $value);
 			$value = str_replace('>', '&gt;', $value);
 
