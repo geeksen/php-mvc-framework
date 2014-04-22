@@ -12,6 +12,8 @@ class user_model extends model
 		'userid' => 'UserID',
 	);
 
+	var $num_rows = 0;
+
 	function __construct(&$db, &$request)
 	{
 		parent::__construct($db, $request);
@@ -21,14 +23,20 @@ class user_model extends model
 	{
 		$query = "SELECT * FROM user WHERE userid = '" . $this->escaped['userid'] . "' LIMIT 0, 1";
 
-		return $this->db->query($query);
+		$result = $this->db->query($query);
+		$this->num_rows = $result->num_rows;
+
+		return $result->fetch_object();
 	}
 
 	function select_info_by_userid_and_passwd()
 	{
 		$query = "SELECT * FROM user WHERE userid = '" . $this->escaped['userid'] . "' AND passwd = '" . $this->escaped['passwd'] . "' LIMIT 0, 1";
 
-		return $this->db->query($query);
+		$result = $this->db->query($query);
+		$this->num_rows = $result->num_rows;
+
+		return $result->fetch_object();
 	}
 
 	function select_list()
@@ -55,6 +63,7 @@ class user_model extends model
 		}
 
 		$result = $this->db->query($query);
+		$this->num_rows = $result->num_rows;
 
 		$fetched = array();
 		while ($row = $result->fetch_object())
@@ -80,7 +89,7 @@ class user_model extends model
 		return $row->user_count;
 	}
 
-	function insert()
+	function insert_info()
 	{
 		$query = "INSERT INTO user (userid, passwd, inserttime, updatetime) VALUES ('" . $this->escaped['userid'] . "', '" . $this->escaped['passwd'] . "', NOW(), NOW())";
 
@@ -88,7 +97,7 @@ class user_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function insert_multiple()
+	function insert_list()
 	{
 		$query = "INSERT INTO user (userid, passwd, inserttime, updatetime) VALUES";
 
@@ -107,7 +116,7 @@ class user_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function update()
+	function update_info()
 	{
 		$query = "UPDATE user SET passwd = '" . $this->escaped['passwd'] . "', updatetime = NOW() WHERE userid = '" . $this->escaped['userid'] . "'";
 
@@ -115,7 +124,7 @@ class user_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function update_multiple()
+	function update_list()
 	{
 		$query = "UPDATE user SET ";
 		$count = count($this->escaped['userids']);
@@ -136,7 +145,7 @@ class user_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function delete()
+	function delete_info()
 	{
 		$query = "DELETE FROM user WHERE userid = '" . $this->escaped['userid'] . "'";
 
@@ -144,7 +153,7 @@ class user_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function delete_multiple()
+	function delete_list()
 	{
 		$query = "DELETE FROM user WHERE userid in ('" . implode("', '", $this->escaped['userids']) . "')";
 

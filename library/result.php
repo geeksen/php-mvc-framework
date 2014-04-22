@@ -4,7 +4,9 @@ class result
 {
 	var $codes = array
 	(
-		// HTTP
+
+	// HTTP
+
 		200 => 'OK',
 		201 => 'Created',
 		202 => 'Accepted',
@@ -45,12 +47,21 @@ class result
 		504 => 'Gateway Timeout',
 		505 => 'HTTP Version Not Supported'
 
-		// Application
-		1000 => 'OK',
+	// Application
 
-		//11 : board
-		1101 => 'boardseq is required',
-		1102 => 'board not found',
+		// Error
+		1000 => 'Error',
+
+		// OK
+		2000 => 'OK',
+
+		//30 : board
+		3001 => 'boardseq is required',
+		3002 => 'board not found',
+
+		//35 : user
+		3501 => 'boardseq is required',
+		3502 => 'board not found',
 	);
 
 	function table()

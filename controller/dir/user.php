@@ -62,14 +62,12 @@ class user extends controller
 
 		$db = $this->load_database('pmf');
 		$user_model = $this->load_model($db, $request, 'dir/user_model');
-		$result = $user_model->select_info_by_userid_and_passwd();
+		$user_info = $user_model->select_info_by_userid_and_passwd();
 
-		if (0 == $result->num_rows)
+		if (0 == $user_model->num_rows)
 		{
 			error_handler(1, 'auth failed');
 		}
-
-		$user_info = $result->fetch_object();
 
 		$this->session->set(array
 		(
@@ -103,7 +101,7 @@ class user extends controller
 		$db = $this->load_database('pmf');
 		$user_model = $this->load_model($db, $request, 'dir/user_model');
 
-		$affected_rows = $user_model->insert();
+		$affected_rows = $user_model->insert_info();
 
 		if (1 != $affected_rows)
 		{

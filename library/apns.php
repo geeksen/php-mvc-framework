@@ -1,6 +1,6 @@
 <?php
 
-class Apns // Apple Push Notification Service
+class apns // Apple Push Notification Service
 {
 	var $apns_host = array
 	(

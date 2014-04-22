@@ -166,6 +166,10 @@ class controller
 
 	function load_library($library)
 	{
+		if (!file_exists('library/' . $library . '.php'))
+		{
+			error_handler(1, 'file not found');
+		}
 		require_once 'library/' . $library . '.php';
 
 		$library = basename($library);
@@ -174,6 +178,10 @@ class controller
 
 	function load_model(&$db, &$request, $model)
 	{
+		if (!file_exists('model/' . $model . '.php'))
+		{
+			error_handler(1, 'file not found');
+		}
 		require_once 'model/' . $model . '.php';
 
 		$model = basename($model);
@@ -182,6 +190,11 @@ class controller
 
 	function load_view($view, &$response)
 	{
+		if (!file_exists('view/' . $view . '.php'))
+		{
+			error_handler(1, 'file not found');
+		}
+
 		foreach ($response as $key => $value)
 		{
 			$$key = $value;

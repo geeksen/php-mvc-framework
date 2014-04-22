@@ -22,6 +22,8 @@ class board_model extends model
 		'userid' => 'UserID',
 	);
 
+	var $num_rows = 0;
+
 	function __construct(&$db, &$request)
 	{
 		parent::__construct($db, $request);
@@ -31,7 +33,10 @@ class board_model extends model
 	{
 		$query = "SELECT * FROM board WHERE seq = " . $this->escaped['seq'] . " LIMIT 0, 1";
 
-		return $this->db->query($query);
+		$result = $this->db->query($query);
+		$this->num_rows = $result->num_rows;
+
+		return $result->fetch_object();
 	}
 
 	function select_list()
@@ -58,6 +63,7 @@ class board_model extends model
 		}
 
 		$result = $this->db->query($query);
+		$this->num_rows = $result->num_rows;
 
 		$fetched = array();
 		while ($row = $result->fetch_object())
@@ -83,7 +89,7 @@ class board_model extends model
 		return $row->board_count;
 	}
 
-	function insert()
+	function insert_info()
 	{
 		$query = "INSERT INTO board (title, content, file1, file2, userid, inserttime, updatetime) VALUES ('" . $this->escaped['title'] . "', '" . $this->escaped['content'] . "', '" . $this->escaped['file1'] . "', '" . $this->escaped['file2'] . "', '" . $this->escaped['sess_userid'] . "', NOW(), NOW())";
 
@@ -91,7 +97,7 @@ class board_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function insert_multiple()
+	function insert_list()
 	{
 		$query = "INSERT INTO board (title, content, file1, file2, userid, inserttime, updatetime) VALUES";
 
@@ -110,7 +116,7 @@ class board_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function update()
+	function update_info()
 	{
 		$query = "UPDATE board SET title = '" . $this->escaped['title'] . "', content = '" . $this->escaped['content'] . "', file1 = '" . $this->escaped['file1'] . "', file2 = '" . $this->escaped['file2'] . "', userid = '" . $this->escaped['sess_userid'] . "', updatetime = NOW() WHERE seq = " . $this->escaped['seq'];
 
@@ -118,7 +124,7 @@ class board_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function update_multiple()
+	function update_list()
 	{
 		$query = "UPDATE board SET ";
 		$count = count($this->escaped['seqs']);
@@ -139,7 +145,7 @@ class board_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function delete()
+	function delete_info()
 	{
 		$query = "DELETE FROM board WHERE seq = " . $this->escaped['seq'] . " AND userid = '" . $this->escaped['sess_userid'] . "'";
 
@@ -147,7 +153,7 @@ class board_model extends model
 		return $this->db->affected_rows;
 	}
 
-	function delete_multiple()
+	function delete_list()
 	{
 		$query = "DELETE FROM board WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ") AND userid = '" . $this->escaped['sess_userid'] . "'";
 

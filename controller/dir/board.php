@@ -80,8 +80,7 @@ class board extends controller
 		$db = $this->load_database('pmf');
 
 		$board_model = $this->load_model($db, $request, 'dir/board_model');
-		$result = $board_model->select_info();
-		$board_info = $result->fetch_object();
+		$board_info = $board_model->select_info();
 
 		$response = array
 		(
@@ -134,8 +133,7 @@ class board extends controller
 			$db = $this->load_database('pmf');
 
 			$board_model = $this->load_model($db, $request, 'dir/board_model');
-			$result = $board_model->select_info();
-			$board_info = $result->fetch_object();
+			$board_info = $board_model->select_info();
 
 			$response = array_merge($response, array
 			(
@@ -172,8 +170,7 @@ class board extends controller
 		$db = $this->load_database('pmf');
 
 		$board_model = $this->load_model($db, $request, 'dir/board_model');
-		$result = $board_model->select_info();
-		$board_info = $result->fetch_object();
+		$board_info = $board_model->select_info();
 
 		$response = array
 		(
@@ -210,7 +207,7 @@ class board extends controller
 			}
 		}
 
-		$affected_rows = $board_model->delete();
+		$affected_rows = $board_model->delete_info();
 
 		if (1 != $affected_rows)
 		{
@@ -254,8 +251,7 @@ class board extends controller
 
 		if (0 != $request['seq'])
 		{
-			$result = $board_model->select_info();
-			$board_info = $result->fetch_object();
+			$board_info = $board_model->select_info();
 
 			$response = array_merge($response, array
 			(
@@ -307,11 +303,11 @@ class board extends controller
 		$affected_rows = 0;
 		if (0 != $request['seq'])
 		{
-			$affected_rows = $board_model->update();
+			$affected_rows = $board_model->update_info();
 		}
 		else
 		{
-			$affected_rows = $board_model->insert();
+			$affected_rows = $board_model->insert_info();
 		}
 
 		if (1 != $affected_rows)
@@ -343,7 +339,7 @@ class board extends controller
 
 		if ('' != $request['delete_multiple'])
 		{
-			$affected_rows = $board_model->delete_multiple();
+			$affected_rows = $board_model->delete_list();
 
 			if (count($request['seqs']) != $affected_rows)
 			{
