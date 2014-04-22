@@ -149,7 +149,7 @@ class error
 		echo '<head>' . PHP_EOL;
 		echo '<meta http-equiv="content-type" content="text/html; charset=UTF-8">' . PHP_EOL;
 		echo '<meta charset="utf-8">' . PHP_EOL;
-		echo '<title>Result</title>' . PHP_EOL;
+		echo '<title>Error</title>' . PHP_EOL;
 		echo '</head>' . PHP_EOL;
 		echo '<body>' . PHP_EOL;
 	}
