@@ -64,7 +64,7 @@ class session
 	{
 		if (!is_array($data))
 		{
-			error_handler(1, 'session_set : array required');
+			error_handler(1000, 'session_set : array required');
 		}
 
 		$_SESSION = array_merge($_SESSION, $data);

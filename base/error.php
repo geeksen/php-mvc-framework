@@ -1,6 +1,19 @@
 <?php
 
-class result
+error_reporting(E_ALL);
+set_error_handler('error_handler');
+
+function error_handler($errno, $errstr, $errfile = '', $errline = 0, $errcontext = array())
+{
+	$error = new error();
+	$errno = (1000 == $errno) ? $error->code($errstr) : $errno;
+
+	$error->show('html', $errno, $errstr, $errfile, $errline, $errcontext);
+
+	exit;
+}
+
+class error
 {
 	var $codes = array
 	(
@@ -45,61 +58,62 @@ class result
 		502 => 'Bad Gateway',
 		503 => 'Service Unavailable',
 		504 => 'Gateway Timeout',
-		505 => 'HTTP Version Not Supported'
+		505 => 'HTTP Version Not Supported',
 
-	// Application
+	// APPLICATION
 
-		// Error
-		1000 => 'Error',
+		// ERROR
+		1000 => 'ERROR',
 
-		// OK
-		2000 => 'OK',
+		// OKAY
+		2000 => 'OKAY',
 
 		//30 : board
 		3001 => 'boardseq is required',
 		3002 => 'board not found',
 
 		//35 : user
-		3501 => 'boardseq is required',
+		3501 => 'userid is required',
 		3502 => 'board not found',
 	);
-
-	function table()
-	{
-		$this->head();
-
-		echo '<table border=1>';
-		foreach ($this->codes as $key => $value)
-		{
-			echo '<tr>' . PHP_EOL;
-			echo '<td>' . $key . '</td>' . PHP_EOL;
-			echo '<td>' . $value . '</td>' . PHP_EOL;
-			echo '</tr>' . PHP_EOL;
-		}
-		echo '</table>';
-
-		$this->tail();
-	}
 
 	function code($message)
 	{
 		$result = array_search($message, $this->codes);
 
-		return (false === $result ? 0 : $result);
+		return (false === $result ? 1000 : $result);
 	}
 
-	function h1_error($message)
+	function show($format, $code, $message, $file, $line, $context)
+	{
+		if (!method_exists($this, $format))
+		{
+			$format = 'html';
+		}
+
+		$this->$format($code, $message, $file, $line, $context);
+	}
+
+	function json($code, $message, $file, $line, $context)
+	{
+		header('Content-type: application/json; charset=utf-8');
+		echo json_encode(array
+		(
+			'code' => $code,
+			'message' => $message,
+		));
+	}
+
+	function html($code, $message, $file, $line, $context)
 	{
 		$this->head();
 
-		echo '<h1>' . PHP_EOL;
-		echo 'Error(' . $this->code($message) . ') : ' . $message . PHP_EOL;
-		echo '</h1>' . PHP_EOL;
+		echo '<h1>Error(' . $code . ') : ' . $message . '</h1>' . PHP_EOL;
 
 		$this->tail();
 	}
 
-	function javascript_alert($message)
+	function alert($code, $message, $file, $line, $context)
 	{
 		$this->head();
 
@@ -111,9 +125,26 @@ class result
 		$this->tail();
 	}
 
+	function table()
+	{
+		$this->head();
+
+		echo '<table border=1>' . PHP_EOL;
+		foreach ($this->codes as $key => $value)
+		{
+			echo '<tr>' . PHP_EOL;
+			echo '<td>' . $key . '</td>' . PHP_EOL;
+			echo '<td>' . $value . '</td>' . PHP_EOL;
+			echo '</tr>' . PHP_EOL;
+		}
+		echo '</table>' . PHP_EOL;
+
+		$this->tail();
+	}
+
 	function head()
 	{
-		echo '<!DOCTYPE html>' . PHP_EOL;
+		echo '<!DOCTYPE html>' . PHP_EOL . PHP_EOL;
 		echo '<html lang="en">' . PHP_EOL;
 		echo '<head>' . PHP_EOL;
 		echo '<meta http-equiv="content-type" content="text/html; charset=UTF-8">' . PHP_EOL;

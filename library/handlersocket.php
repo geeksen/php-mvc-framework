@@ -30,12 +30,12 @@ class handlersocket
 	{
 		if (!array_key_exists($db, $this->config))
 		{
-			error_handler(1, 'handersocket config not found');
+			error_handler(1000, 'handersocket config not found');
 		}
 
 		if (!array_key_exists($command, $this->wr))
 		{
-			error_handler(1, 'handersocket config not found');
+			error_handler(1000, 'handersocket config not found');
 		}
 
 		$wr = $this->wr[$command];

@@ -13,7 +13,7 @@ class cookiesession
 	{
 		if ('' == $this->encrypt_key)
 		{
-			error_handler(1, 'encrypt_key required');
+			error_handler(1000, 'encrypt_key required');
 		}
 
 		if (!$this->load())
@@ -78,7 +78,7 @@ class cookiesession
 	{
 		if (!is_array($values))
 		{
-			error_handler(1, 'session_set : array required');
+			error_handler(1000, 'session_set : array required');
 		}
 
 		$usr_dat = array_merge($this->data['usr_dat'], $values);

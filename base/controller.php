@@ -74,7 +74,7 @@ class controller
 
 			if (!function_exists('finfo_open'))
 			{
-				error_handler(1, 'finfo_open not found');
+				error_handler(1000, 'finfo_open not found');
 			}
 
 			$finfo = finfo_open();
@@ -97,24 +97,24 @@ class controller
 
 				if (!in_array($mime, $this->upload_allowed))
 				{
-					error_handler(1, 'upload not allowed');
+					error_handler(1000, 'upload not allowed');
 				}
 
 				if (in_array($mime, $this->img_mimes))
 				{
 					if (!function_exists('getimagesize'))
 					{
-						error_handler(1, 'getimagesize not found');
+						error_handler(1000, 'getimagesize not found');
 					}
 
 					if (false === getimagesize($tmp_name))
 					{
-						error_handler(1, 'getimagesize failed');
+						error_handler(1000, 'getimagesize failed');
 					}
 					
 					if (false === ($handle = fopen($_FILES[$file]['tmp_name'], 'rb')))
 					{
-						error_handler(1, 'could not open tmp_name');
+						error_handler(1000, 'could not open tmp_name');
 					}
 
 					$opening_bytes = fread($handle, 256);
@@ -122,7 +122,7 @@ class controller
 
 					if (preg_match('/<(a|body|head|html|img|plaintext|pre|script|table|title)[\s>]/i', $opening_bytes))
 					{
-						error_handler(1, 'not an image');
+						error_handler(1000, 'not an image');
 					}
 				}
 			}
@@ -140,17 +140,17 @@ class controller
 
 			if (100 == $i)
 			{
-				error_handler(1, 'upload failed');
+				error_handler(1000, 'upload failed');
 			}
 
 			if (!file_exists($path) && !mkdir($path, 0755))
 			{
-				error_handler(1, 'mkdir failed');
+				error_handler(1000, 'mkdir failed');
 			}
 
 			if (is_uploaded_file($_FILES[$file]['tmp_name']) && !move_uploaded_file($_FILES[$file]['tmp_name'], $path . $new_filename))
 			{
-				error_handler(1, 'upload failed');
+				error_handler(1000, 'upload failed');
 			}
 
 			$upload[$file] = $new_filename;
@@ -168,7 +168,7 @@ class controller
 	{
 		if (!file_exists('library/' . $library . '.php'))
 		{
-			error_handler(1, 'file not found');
+			error_handler(1000, 'file not found');
 		}
 		require_once 'library/' . $library . '.php';
 
@@ -180,7 +180,7 @@ class controller
 	{
 		if (!file_exists('model/' . $model . '.php'))
 		{
-			error_handler(1, 'file not found');
+			error_handler(1000, 'file not found');
 		}
 		require_once 'model/' . $model . '.php';
 
@@ -192,7 +192,7 @@ class controller
 	{
 		if (!file_exists('view/' . $view . '.php'))
 		{
-			error_handler(1, 'file not found');
+			error_handler(1000, 'file not found');
 		}
 
 		foreach ($response as $key => $value)

@@ -50,12 +50,12 @@ class user extends controller
 
 		if ('' == $request['userid'])
 		{
-			error_handler(1, 'userid required');
+			error_handler(1000, 'userid required');
 		}
 
 		if ('' == $request['passwd'])
 		{
-			error_handler(1, 'passwd required');
+			error_handler(1000, 'passwd required');
 		}
 
 		$request['passwd'] = md5($request['passwd']);
@@ -66,7 +66,7 @@ class user extends controller
 
 		if (0 == $user_model->num_rows)
 		{
-			error_handler(1, 'auth failed');
+			error_handler(1000, 'auth failed');
 		}
 
 		$this->session->set(array
@@ -88,12 +88,12 @@ class user extends controller
 
 		if ('' == $request['userid'])
 		{
-			error_handler(1, 'userid required');
+			error_handler(1000, 'userid required');
 		}
 
 		if ($request['passwd'] != $request['retypepasswd'])
 		{
-			error_handler(1, 'retype passwd');
+			error_handler(1000, 'retype passwd');
 		}
 
 		$request['passwd'] = md5($request['passwd']);
@@ -105,7 +105,7 @@ class user extends controller
 
 		if (1 != $affected_rows)
 		{
-			error_handler(1, 'insufficient affected_rows');
+			error_handler(1000, 'insufficient affected_rows');
 		}
 
 		$this->redirect_to('/dir/user/signin');

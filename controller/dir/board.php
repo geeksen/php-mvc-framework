@@ -74,7 +74,7 @@ class board extends controller
 
 		if (0 == $request['seq'])
 		{
-			error_handler(1, 'seq required');
+			error_handler(1000, 'seq required');
 		}
 
 		$db = $this->load_database('pmf');
@@ -164,7 +164,7 @@ class board extends controller
 
 		if (0 == $request['seq'])
 		{
-			error_handler(1, 'seq required');
+			error_handler(1000, 'seq required');
 		}
 
 		$db = $this->load_database('pmf');
@@ -197,12 +197,12 @@ class board extends controller
 
 				if (false === file_exists($filepath))
 				{
-					error_handler(1, 'file not found');
+					error_handler(1000, 'file not found');
 				}
 
 				if (false === unlink($filepath))
 				{
-					error_handler(1, 'unlink failed');
+					error_handler(1000, 'unlink failed');
 				}
 			}
 		}
@@ -211,7 +211,7 @@ class board extends controller
 
 		if (1 != $affected_rows)
 		{
-			error_handler(1, 'insufficient affected_rows');
+			error_handler(1000, 'insufficient affected_rows');
 		}
 
 		$this->redirect_to('/dir/board/index');
@@ -289,12 +289,12 @@ class board extends controller
 
 					if (false === file_exists($filepath))
 					{
-						error_handler(1, 'file not found');
+						error_handler(1000, 'file not found');
 					}
 
 					if (false === unlink($filepath))
 					{
-						error_handler(1, 'unlink failed');
+						error_handler(1000, 'unlink failed');
 					}
 				}
 			}
@@ -312,7 +312,7 @@ class board extends controller
 
 		if (1 != $affected_rows)
 		{
-			error_handler(1, 'insufficient affected_rows');
+			error_handler(1000, 'insufficient affected_rows');
 		}
 
 		$this->redirect_to('/dir/board/index');
@@ -331,7 +331,7 @@ class board extends controller
 
 		if (0 == count($request['seqs']))
 		{
-			error_handler(1, 'seqs required');
+			error_handler(1000, 'seqs required');
 		}
 
 		$db = $this->load_database('pmf');
@@ -343,7 +343,7 @@ class board extends controller
 
 			if (count($request['seqs']) != $affected_rows)
 			{
-				error_handler(1, 'insufficient affected_rows');
+				error_handler(1000, 'insufficient affected_rows');
 			}
 		}
 

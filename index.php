@@ -1,18 +1,6 @@
 <?php
 
-//error_reporting(E_ALL);
-//set_error_handler('error_handler');
-
-function error_handler($errno, $errstr)
-{
-	echo json_encode(array
-	(
-		'errno' => $errno,
-		'errstr' => $errstr,
-	));
-
-	exit;
-}
+require_once 'base/error.php';
 
 class application
 {
@@ -75,7 +63,7 @@ class application
 		$path = 'controller/' . $this->directory . '/' . $this->controller;
 		if (!file_exists($path . '.php'))
 		{
-			error_handler(1, 'file not found');
+			error_handler(1000, 'file not found');
 		}
 
 		require_once $path . '.php';
@@ -92,13 +80,13 @@ class application
 
 		if (!class_exists($controller))
 		{
-			error_handler(1, 'class not found');
+			error_handler(1000, 'class not found');
 		}
 		$class = new $controller($this->path_info);
 
 		if (!method_exists($controller, $method))
 		{
-			error_handler(1, 'method not found');
+			error_handler(1000, 'method not found');
 		}
 		$class->$method();
 	}
