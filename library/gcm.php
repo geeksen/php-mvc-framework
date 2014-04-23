@@ -52,4 +52,3 @@ class gcm // Google Cloud Messaging
 		));
 	}
 }
-
