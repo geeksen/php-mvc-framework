@@ -47,6 +47,7 @@
 <?php endforeach ?>
 
 </table>
+</form>
 
 <div>
   <span class='left'><input type='checkbox' name='check_all'></span>
