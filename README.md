@@ -11,7 +11,12 @@ Install Apache2
 
 * cd /etc/apache2/sites-enabled
 * sudo vi 000-default
-> &lt;Directory /var/www&gt; .. AllowOverride All .. &lt;/Directory&gt;
+```
+<Directory /var/www>
+..
+AllowOverride All
+</Directory>
+```
 
 * sudo /etc/init.d/apache2 restart
 
