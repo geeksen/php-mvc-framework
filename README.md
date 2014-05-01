@@ -30,10 +30,13 @@ deb-src http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu precise main
 ```
 
 * sudo apt-get update
+* sudo apt-get upgrade
 * sudo apt-get install mariadb-server
 
 Install PHP
 -----------
+* sudo apt-get update
+* sudo apt-get upgrade
 * sudo apt-get install libapache2-mod-php5 php5 php5-mysqlnd
 * sudo /etc/init.d/apache2 restart
 
