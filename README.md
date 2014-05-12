@@ -49,7 +49,7 @@ handlersocket_port_wr = 9999
 * exit
 * sudo /etc/init.d/mysql restart
 * mysql -u root -p
-* SHOW PROCESSLIST
+* SHOW PROCESSLIST;
 * exit
 
 Install PHP
