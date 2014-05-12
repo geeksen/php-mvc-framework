@@ -38,6 +38,7 @@ Install HandlerSocket
 * sudo vi /etc/mysql/my.cnf
 ```
 [mysqld]
+..
 handlersocket_address = 127.0.0.1
 handlersocket_port = 9998
 handlersocket_port_wr = 9999
