@@ -45,9 +45,11 @@ handlersocket_port_wr = 9999
 
 * mysql -u root -p
 * INSTALL PLUGIN handlersocket SONAME 'handlersocket.so';
+* exit
 * sudo /etc/init.d/mysql restart
 * mysql -u root -p
 * SHOW PROCESSLIST
+* exit
 
 Install PHP
 -----------
