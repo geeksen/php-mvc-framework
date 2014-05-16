@@ -68,13 +68,33 @@ class error
 		// OKAY
 		2000 => 'OKAY',
 
-		//30 : board
-		3001 => 'boardseq is required',
-		3002 => 'board not found',
+		// INDEX
+		3001 => 'file not found',
+		3002 => 'class not found',
+		3003 => 'method not found',
 
-		//35 : user
-		3501 => 'userid is required',
-		3502 => 'board not found',
+		// BASE
+		4001 => 'finfo_open not found',
+		4002 => 'upload not allowed',
+		4003 => 'getimagesize not found',
+		4004 => 'getimagesize failed',
+		4005 => 'could not open tmp_name',
+		4006 => 'not an image',
+		4007 => 'upload failed',
+		4008 => 'mkdir failed',
+		4009 => 'upload failed',
+		4010 => 'library not found',
+		4011 => 'model not found',
+		4012 => 'view not found',
+		4013 => 'database config not found',
+
+		//50 : board
+		5001 => 'boardseq is required',
+		5002 => 'board not found',
+
+		//55 : user
+		5501 => 'userid is required',
+		5502 => 'board not found',
 	);
 
 	function code($message)
