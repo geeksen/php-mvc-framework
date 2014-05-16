@@ -168,7 +168,7 @@ class controller
 	{
 		if (!file_exists('library/' . $library . '.php'))
 		{
-			error_handler(1000, 'file not found');
+			error_handler(1000, 'library not found');
 		}
 		require_once 'library/' . $library . '.php';
 
@@ -180,7 +180,7 @@ class controller
 	{
 		if (!file_exists('model/' . $model . '.php'))
 		{
-			error_handler(1000, 'file not found');
+			error_handler(1000, 'model not found');
 		}
 		require_once 'model/' . $model . '.php';
 
@@ -192,7 +192,7 @@ class controller
 	{
 		if (!file_exists('view/' . $view . '.php'))
 		{
-			error_handler(1000, 'file not found');
+			error_handler(1000, 'view not found');
 		}
 
 		foreach ($response as $key => $value)
