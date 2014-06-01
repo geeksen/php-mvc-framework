@@ -33,6 +33,7 @@ deb-src http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu precise main
 * sudo apt-get upgrade
 * sudo apt-get install mariadb-server
 
+<!--
 Install HandlerSocket
 ---------------------
 * sudo vi /etc/mysql/my.cnf
@@ -51,6 +52,7 @@ handlersocket_port_wr = 9999
 * mysql -u root -p
 * SHOW PROCESSLIST;
 * exit
+-->
 
 Install PHP
 -----------
