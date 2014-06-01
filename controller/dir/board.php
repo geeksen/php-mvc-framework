@@ -195,12 +195,12 @@ class board extends controller
 			{
 				$filepath = $path . $response[$file];
 
-				if (false === file_exists($filepath))
+				if (!file_exists($filepath))
 				{
 					error_handler(1000, 'file not found');
 				}
 
-				if (false === unlink($filepath))
+				if (!unlink($filepath))
 				{
 					error_handler(1000, 'unlink failed');
 				}
@@ -287,12 +287,12 @@ class board extends controller
 				{
 					$filepath = $path . $response[$file];
 
-					if (false === file_exists($filepath))
+					if (!file_exists($filepath))
 					{
 						error_handler(1000, 'file not found');
 					}
 
-					if (false === unlink($filepath))
+					if (!unlink($filepath))
 					{
 						error_handler(1000, 'unlink failed');
 					}
