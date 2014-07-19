@@ -74,7 +74,7 @@ class board extends controller
 
 		if (0 == $request['seq'])
 		{
-			error_handler(1000, 'seq required');
+			error_handler(1000, 'boardseq required');
 		}
 
 		$db = $this->load_database('pmf');
@@ -164,7 +164,7 @@ class board extends controller
 
 		if (0 == $request['seq'])
 		{
-			error_handler(1000, 'seq required');
+			error_handler(1000, 'boardseq required');
 		}
 
 		$db = $this->load_database('pmf');
@@ -211,7 +211,7 @@ class board extends controller
 
 		if (1 != $affected_rows)
 		{
-			error_handler(1000, 'insufficient affected_rows');
+			error_handler(1000, 'query failed');
 		}
 
 		$this->redirect_to('/dir/board/index');
@@ -312,7 +312,7 @@ class board extends controller
 
 		if (1 != $affected_rows)
 		{
-			error_handler(1000, 'insufficient affected_rows');
+			error_handler(1000, 'query failed');
 		}
 
 		$this->redirect_to('/dir/board/index');
@@ -331,7 +331,7 @@ class board extends controller
 
 		if (0 == count($request['seqs']))
 		{
-			error_handler(1000, 'seqs required');
+			error_handler(1000, 'boardseq required');
 		}
 
 		$db = $this->load_database('pmf');
@@ -343,7 +343,7 @@ class board extends controller
 
 			if (count($request['seqs']) != $affected_rows)
 			{
-				error_handler(1000, 'insufficient affected_rows');
+				error_handler(1000, 'query failed');
 			}
 		}
 

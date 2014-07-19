@@ -114,7 +114,7 @@ class controller
 					
 					if (false === ($handle = fopen($_FILES[$file]['tmp_name'], 'rb')))
 					{
-						error_handler(1000, 'could not open tmp_name');
+						error_handler(1000, 'fopen tmp_file failed');
 					}
 
 					$opening_bytes = fread($handle, 256);

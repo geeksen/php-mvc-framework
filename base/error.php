@@ -74,28 +74,38 @@ class error
 		3003 => 'method not found',
 
 		// BASE
-		4001 => 'finfo_open not found',
-		4002 => 'upload not allowed',
-		4003 => 'getimagesize not found',
-		4004 => 'getimagesize failed',
-		4005 => 'could not open tmp_name',
-		4006 => 'not an image',
-		4007 => 'upload failed',
-		4008 => 'mkdir failed',
-		4009 => 'upload failed',
-		4010 => 'library not found',
-		4011 => 'model not found',
-		4012 => 'view not found',
-		4013 => 'database config not found',
+		3004 => 'finfo_open not found',
+		3005 => 'upload not allowed',
+		3006 => 'getimagesize not found',
+		3007 => 'getimagesize failed',
+		3008 => 'fopen tmp_file failed',
+		3009 => 'not an image',
+		3010 => 'upload failed',
+		3011 => 'mkdir failed',
+		3012 => 'upload failed',
+		3013 => 'library not found',
+		3014 => 'model not found',
+		3015 => 'view not found',
+		3016 => 'database config not found',
 
-		//50 : board
-		5001 => 'boardseq is required',
-		5002 => 'board not found',
-
-		//55 : user
-		5501 => 'userid is required',
-		5502 => 'board not found',
+		// COMMON
+		3017 => 'query failed',
+		3018 => 'unlink failed',
 	);
+
+	function __construct()
+	{
+		$i = 4000;
+
+		$this->codes[++$i] = 'boardseq required'; 
+		$this->codes[++$i] = 'board not found'; 
+
+		$this->codes[++$i] = 'userid required'; 
+		$this->codes[++$i] = 'passwd required'; 
+		$this->codes[++$i] = 'retype passwd'; 
+		$this->codes[++$i] = 'auth failed';
+		$this->codes[++$i] = 'user not found'; 
+	}
 
 	function code($message)
 	{

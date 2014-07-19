@@ -105,7 +105,7 @@ class user extends controller
 
 		if (1 != $affected_rows)
 		{
-			error_handler(1000, 'insufficient affected_rows');
+			error_handler(1000, 'query failed');
 		}
 
 		$this->redirect_to('/dir/user/signin');
