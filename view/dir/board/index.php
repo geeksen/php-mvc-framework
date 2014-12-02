@@ -47,7 +47,6 @@
 <?php endforeach ?>
 
 </table>
-</form>
 
 <div>
   <span class='left'><input type='checkbox' name='check_all'></span>
@@ -75,6 +74,7 @@ $totalpage = 1;
 
   </span>
 </div>
+</form>
 
 </div>
 
