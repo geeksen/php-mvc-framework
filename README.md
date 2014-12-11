@@ -98,7 +98,7 @@ Install PHP
 -----------
 * sudo apt-get update
 * sudo apt-get upgrade
-* sudo apt-get install libapache2-mod-php5 php5 php5-mysqlnd
+* sudo apt-get install libapache2-mod-php5 php5 php5-mysqlnd php5-curl
 * sudo /etc/init.d/apache2 restart
 
 Install php-mvc-framework
