@@ -1,6 +1,46 @@
 php-mvc-framework
 =================
 
+<!--
+sudo apt-get install nginx
+sudo apt-get install php-fpm
+
+vi /etc/php5/fpm/php.ini
+cgi.fix_pathinfo=0
+
+sudo vi /etc/nginx/sites-available/default
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server ipv6only=on;
+
+        root /var/www/html;
+	
+        autoindex off;
+        index index.php;
+
+        server_name localhost;
+
+        location ~* \.(ico|css|js|gif|jpe?g|png)(\?[0-9]+)?$ {
+                expires max;
+                log_not_found off;
+        }
+
+        location / {
+                try_files $uri $uri/ /index.php;
+
+                location = /index.php {
+                        fastcgi_pass unix:/var/run/php5-fpm.sock;
+                        include fastcgi_params;
+                        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                }
+        }
+
+        location ~ \.php$ {
+                return 444;
+        }
+}
+-->
+
 Install Apache2
 ---------------
 * sudo apt-get update
