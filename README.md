@@ -63,7 +63,7 @@ AllowOverride All
 Install MariaDB
 ---------------
 * sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
-* vi /etc/apt/sources.list
+* sudo vi /etc/apt/sources.list
 ```
 deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu precise main
 deb-src http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu precise main
