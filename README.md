@@ -2,13 +2,20 @@ php-mvc-framework
 =================
 
 <!--
-sudo apt-get install nginx
-sudo apt-get install php-fpm
+Install NginX
+--------------
+* sudo apt-get update
+* sudo apt-get upgrade
+* sudo apt-get install nginx
+* sudo apt-get install php5-fpm
 
-vi /etc/php5/fpm/php.ini
+* sudo vi /etc/php5/fpm/php.ini
+```
 cgi.fix_pathinfo=0
+```
 
-sudo vi /etc/nginx/sites-available/default
+* sudo vi /etc/nginx/sites-available/default
+```
 server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
