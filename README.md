@@ -50,7 +50,7 @@ Install Apache2
 * sudo a2enmod mime_magic
 
 * cd /etc/apache2/sites-enabled
-* sudo vi 000-default
+* sudo vi 000-default.conf
 ```
 <Directory /var/www>
 ..
