@@ -14,7 +14,7 @@ Install NginX
 cgi.fix_pathinfo=0
 ```
 
-* sudo vi /etc/nginx/sites-available/default
+* sudo vi /etc/nginx/sites-enabled/default
 ```
 server {
         listen 80 default_server;

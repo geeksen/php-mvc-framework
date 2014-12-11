@@ -12,11 +12,19 @@
   </tr>
   <tr>
     <th>File1</th>
-    <td><?php echo $file1 ?></td>
+    <td>
+<?php if ('' != $file1): ?>
+      <a href='/upload/<?php echo substr($inserttime, 0, 7) ?>/<?php echo $file1 ?>'><?php echo $file1 ?></a>
+<?php endif ?>
+    </td>
   </tr>
   <tr>
     <th>File2</th>
-    <td><?php echo $file2 ?></td>
+    <td>
+<?php if ('' != $file2): ?>
+      <a href='/upload/<?php echo substr($inserttime, 0, 7) ?>/<?php echo $file2 ?>'><?php echo $file2 ?></a>
+<?php endif ?>
+    </td>
   </tr>
   <tr>
     <th>UserID</th>
