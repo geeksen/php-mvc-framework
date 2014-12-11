@@ -2,7 +2,7 @@
 
 class controller
 {
-	var $path_info = array();
+	var $request_uri = array();
 
 	var $upload_path = '/home/ubuntu/github/php-mvc-framework/upload/';
 	var $upload_allowed = array
@@ -16,9 +16,9 @@ class controller
 	var $png_mimes = array('image/x-png');
 	var $jpeg_mimes = array('image/jpe', 'image/jpg', 'image/pjpeg');
 
-	function __construct(&$path_info)
+	function __construct(&$request_uri)
 	{
-		$this->path_info = $path_info;
+		$this->request_uri = $request_uri;
 	}
 
 	function input_get($request)
@@ -26,7 +26,7 @@ class controller
 		$i = 0;
 		foreach ($request as $key => $value)
 		{
-			$request[$key] = isset($this->path_info[$i]) ? $this->path_info[$i] : $value;
+			$request[$key] = isset($this->request_uri[$i]) ? $this->request_uri[$i] : $value;
 
 			if (0 === $value)
 			{

@@ -4,7 +4,7 @@ require_once 'base/error.php';
 
 class application
 {
-	var $path_info = array();
+	var $request_uri = array();
 
 	var $directory = '';
 	var $controller = '';
@@ -24,22 +24,22 @@ class application
 
 	function parse()
 	{
-		$PATH_INFO = '';
+		$REQUEST_URI = '';
 		if ('cli' == php_sapi_name())
 		{
 			$args = array_slice($_SERVER['argv'], 1);
-			$PATH_INFO = $args ? '/' . implode('/', $args) : '';
+			$REQUEST_URI = $args ? '/' . implode('/', $args) : '';
 		}
-		else if (isset($_SERVER['PATH_INFO']))
+		else if (isset($_SERVER['REQUEST_URI']))
 		{
-			$PATH_INFO = $_SERVER['PATH_INFO'];
+			$REQUEST_URI = $_SERVER['REQUEST_URI'];
 		}
 
 		$slice_offset = 0;
-		$this->path_info = explode('/', rtrim($PATH_INFO, '/'));
-		if (isset($this->path_info[0])) { $this->directory  = $this->path_info[0]; $slice_offset++; }
-		if (isset($this->path_info[1])) { $this->controller = $this->path_info[1]; $slice_offset++; }
-		if (isset($this->path_info[2])) { $this->method     = $this->path_info[2]; $slice_offset++; }
+		$this->request_uri = explode('/', rtrim($REQUEST_URI, '/'));
+		if (isset($this->request_uri[0])) { $this->directory  = $this->request_uri[0]; $slice_offset++; }
+		if (isset($this->request_uri[1])) { $this->controller = $this->request_uri[1]; $slice_offset++; }
+		if (isset($this->request_uri[2])) { $this->method     = $this->request_uri[2]; $slice_offset++; }
 
 		$path = 'controller/' . $this->directory . '/' . $this->controller;
 		if (file_exists($path) && is_dir($path))
@@ -48,14 +48,14 @@ class application
 			$this->controller = $this->method;
 			$this->method = 'index';
 
-			if (isset($this->path_info[3]) && '' != $this->path_info[3])
+			if (isset($this->request_uri[3]) && '' != $this->request_uri[3])
 			{
-				$this->method = $this->path_info[3];
+				$this->method = $this->request_uri[3];
 				$slice_offset++;
 			}
 		}
 
-		$this->path_info = array_slice($this->path_info, $slice_offset);
+		$this->request_uri = array_slice($this->request_uri, $slice_offset);
 	}
 
 	function load()
@@ -82,7 +82,7 @@ class application
 		{
 			error_handler(1000, 'class not found');
 		}
-		$class = new $controller($this->path_info);
+		$class = new $controller($this->request_uri);
 
 		if (!method_exists($controller, $method))
 		{
