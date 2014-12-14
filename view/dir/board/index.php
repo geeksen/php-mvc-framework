@@ -82,7 +82,7 @@ window.onload = function() {
       var elems = new Array();
 
       var tags = document.getElementsByTagName('*');
-      for (var i = 0; i < tags.length; i++) {
+      for (var i = 0; i < tags.length; ++i) {
         var classes = ' ' + tags[i].getAttribute('class') + ' ';
         if (-1 != classes.indexOf(class_name)) {
           elems.push(tags[i]);
@@ -100,14 +100,14 @@ window.onload = function() {
 
   var CheckAll = function(checked) {
     var inputs = document.getElementsByTagName('input');
-    for (var i = 0; i < inputs.length; i++) {
+    for (var i = 0; i < inputs.length; ++i) {
       if ('checkbox' != inputs[i].type) continue;
       inputs[i].checked = checked;
     }
   }
 
   var checkall_checkboxes = document.getElementsByName('check_all');
-  for (var i = 0; i < checkall_checkboxes.length; i++) {
+  for (var i = 0; i < checkall_checkboxes.length; ++i) {
     checkall_checkboxes[i].onclick = function() {
       CheckAll(this.checked);
     }
@@ -140,7 +140,7 @@ window.onload = function() {
       pagination.appendChild(document.createTextNode(' \u00a0'));
     }
 
-    for (var j = 0; i <= page_count && j < link_count; i++, j++) {
+    for (var j = 0; i <= page_count && j < link_count; ++i, ++j) {
       if (i == page) {
         var b_page = document.createElement('b');
         b_page.appendChild(document.createTextNode(i));

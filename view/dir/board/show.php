@@ -52,7 +52,7 @@
 <script type='text/javascript'>
 window.onload = function() {
   var list_buttons = document.getElementsByName('list');
-  for (var i = 0; i < list_buttons.length; i++) {
+  for (var i = 0; i < list_buttons.length; ++i) {
     list_buttons[i].onclick = function() {
       history.go(-1);
     }

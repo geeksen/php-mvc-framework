@@ -60,7 +60,7 @@
 <script type='text/javascript'>
 window.onload = function() {
   var cancel_buttons = document.getElementsByName('cancel');
-  for (var i = 0; i < cancel_buttons.length; i++) {
+  for (var i = 0; i < cancel_buttons.length; ++i) {
     cancel_buttons[i].onclick = function() {
       history.go(-1);
     }

@@ -33,7 +33,7 @@ class controller
 				$request[$key] = intval($request[$key]);
 			}
 
-			$i++;
+			++$i;
 		}
 
 		return $request;
@@ -135,7 +135,7 @@ class controller
 		 	while ($i < 100 && file_exists($path . $new_filename))
 			{
 				$new_filename = $filename . '(' . $i . ')' . $ext;
-				$i++;
+				++$i;
 			}
 
 			if (100 == $i)
