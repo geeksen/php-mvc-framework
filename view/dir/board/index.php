@@ -52,9 +52,6 @@
   <span class='left'><input type='checkbox' name='check_all'></span>
   <div class='pagination'></div>
 </div>
-<?php
-$totalpage = 1;
-?>
 
 <div class='nav-bottom'>
   <input type='submit' name='delete_multiple' value='Delete'>
