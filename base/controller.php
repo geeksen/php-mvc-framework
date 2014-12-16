@@ -26,7 +26,7 @@ class controller
 		$i = 0;
 		foreach ($request as $key => $value)
 		{
-			$request[$key] = isset($this->request_uri[$i]) ? $this->request_uri[$i] : $value;
+			$request[$key] = isset($this->request_uri[$i]) ? urldecode($this->request_uri[$i]) : $value;
 
 			if (0 === $value)
 			{
