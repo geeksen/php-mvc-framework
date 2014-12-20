@@ -3,19 +3,14 @@
 class model
 {
 	var $db;
-	var $escaped;
+	var $result;
+	var $num_rows;
+	var $affected_rows;
 
-	function __construct(&$db, &$request)
+	function __construct(&$db)
 	{
 		$this->db = $db;
 		$this->db->set_charset('utf8');
-
-		$this->escape_request($request);
-	}
-
-	function escape_request(&$request)
-	{
-		$this->escaped = $this->real_escape_array($request);
 	}
 
 	function real_escape_array(&$array)
@@ -38,5 +33,42 @@ class model
 		}
 
 		return $array;
+	}
+
+	function query($query, $params = array())
+	{
+		if (false === strpos($query, '?'))
+		{
+			$this->result = $this->db->query($query);
+			$this->affected_rows = $this->db->affected_rows;
+			return;
+		}
+
+		$exploded = explode('?', $query);
+		if (count($params) != (count($exploded) - 1))
+		{
+			error_handler(1000, 'invalid query params');
+		}
+
+		$i = 0;
+		$query = $exploded[0];
+		foreach ($params as $param)
+		{
+			if (is_array($param))
+			{
+				error_handler(1000, 'invalid query params');
+			}
+
+			if (is_string($param))
+			{
+				$param = "'" . $param . "'";
+			}
+ 
+			$query .= $param;
+			$query .= $exploded[++$i];
+		}
+
+		$this->result = $this->db->query($query);
+		$this->affected_rows = $this->db->affected_rows;
 	}
 }

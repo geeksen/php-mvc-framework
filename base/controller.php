@@ -2,8 +2,6 @@
 
 class controller
 {
-	var $request_uri = array();
-
 	var $upload_path = '/home/ubuntu/github/php-mvc-framework/upload/';
 	var $upload_allowed = array
 	(
@@ -16,6 +14,8 @@ class controller
 	var $png_mimes = array('image/x-png');
 	var $jpeg_mimes = array('image/jpe', 'image/jpg', 'image/pjpeg');
 
+	var $request_uri = array();
+
 	function __construct(&$request_uri)
 	{
 		$this->request_uri = $request_uri;
@@ -27,12 +27,6 @@ class controller
 		foreach ($request as $key => $value)
 		{
 			$request[$key] = isset($this->request_uri[$i]) ? urldecode($this->request_uri[$i]) : $value;
-
-			if (0 === $value)
-			{
-				$request[$key] = intval($request[$key]);
-			}
-
 			++$i;
 		}
 
@@ -44,11 +38,6 @@ class controller
 		foreach ($request as $key => $value)
 		{
 			$request[$key] = isset($_POST[$key]) ? $_POST[$key] : $value;
-
-			if (0 === $value)
-			{
-				$request[$key] = intval($request[$key]);
-			}
 		}
 
 		return $request;
@@ -176,7 +165,7 @@ class controller
 		return new $library();
 	}
 
-	function load_model(&$db, &$request, $model)
+	function load_model(&$db, $model)
 	{
 		if (!file_exists('model/' . $model . '.php'))
 		{
@@ -185,7 +174,7 @@ class controller
 		require_once 'model/' . $model . '.php';
 
 		$model = basename($model);
-		return new $model($db, $request);
+		return new $model($db);
 	}
 
 	function load_view($view, &$response)

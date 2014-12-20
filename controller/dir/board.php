@@ -36,9 +36,9 @@ class board extends controller
 		
 		$db = $this->load_database('pmf');
 
-		$board_model = $this->load_model($db, $request, 'dir/board_model');
-		$board_count = $board_model->select_count();
-		$board_list = $board_model->select_list();
+		$board_model = $this->load_model($db, 'dir/board_model');
+		$board_count = $board_model->select_count($request);
+		$board_list = $board_model->select_list($request);
 
 		$response = array
 		(
@@ -79,8 +79,8 @@ class board extends controller
 
 		$db = $this->load_database('pmf');
 
-		$board_model = $this->load_model($db, $request, 'dir/board_model');
-		$board_info = $board_model->select_info();
+		$board_model = $this->load_model($db, 'dir/board_model');
+		$board_info = $board_model->select_info($request);
 
 		$response = array
 		(
@@ -132,8 +132,8 @@ class board extends controller
 		{
 			$db = $this->load_database('pmf');
 
-			$board_model = $this->load_model($db, $request, 'dir/board_model');
-			$board_info = $board_model->select_info();
+			$board_model = $this->load_model($db, 'dir/board_model');
+			$board_info = $board_model->select_info($request);
 
 			$response = array_merge($response, array
 			(
@@ -169,8 +169,8 @@ class board extends controller
 
 		$db = $this->load_database('pmf');
 
-		$board_model = $this->load_model($db, $request, 'dir/board_model');
-		$board_info = $board_model->select_info();
+		$board_model = $this->load_model($db, 'dir/board_model');
+		$board_info = $board_model->select_info($request);
 
 		$response = array
 		(
@@ -207,7 +207,7 @@ class board extends controller
 			}
 		}
 
-		$affected_rows = $board_model->delete_info();
+		$affected_rows = $board_model->delete_info($request);
 
 		if (1 != $affected_rows)
 		{
@@ -247,11 +247,11 @@ class board extends controller
 		);
 
 		$db = $this->load_database('pmf');
-		$board_model = $this->load_model($db, $request, 'dir/board_model');
+		$board_model = $this->load_model($db, 'dir/board_model');
 
 		if (0 != $request['seq'])
 		{
-			$board_info = $board_model->select_info();
+			$board_info = $board_model->select_info($request);
 
 			$response = array_merge($response, array
 			(
@@ -273,7 +273,6 @@ class board extends controller
 			'file1' => $upload['file1'],
 			'file2' => $upload['file2'],
 		));
-		$board_model->escape_request($request);
 
 		if (0 != $request['seq'])
 		{
@@ -303,11 +302,11 @@ class board extends controller
 		$affected_rows = 0;
 		if (0 != $request['seq'])
 		{
-			$affected_rows = $board_model->update_info();
+			$affected_rows = $board_model->update_info($request);
 		}
 		else
 		{
-			$affected_rows = $board_model->insert_info();
+			$affected_rows = $board_model->insert_info($request);
 		}
 
 		if (1 != $affected_rows)
@@ -335,11 +334,11 @@ class board extends controller
 		}
 
 		$db = $this->load_database('pmf');
-		$board_model = $this->load_model($db, $request, 'dir/board_model');
+		$board_model = $this->load_model($db, 'dir/board_model');
 
 		if ('' != $request['delete_multiple'])
 		{
-			$affected_rows = $board_model->delete_list();
+			$affected_rows = $board_model->delete_list($request);
 
 			if (count($request['seqs']) != $affected_rows)
 			{

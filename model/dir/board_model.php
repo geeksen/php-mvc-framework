@@ -22,51 +22,50 @@ class board_model extends model
 		'userid' => 'UserID',
 	);
 
-	var $num_rows = 0;
-
-	function __construct(&$db, &$request)
+	function __construct(&$db)
 	{
-		parent::__construct($db, $request);
+		parent::__construct($db);
 	}
 
-	function select_info()
+	function select_info(&$request)
 	{
-		$query = "SELECT * FROM board WHERE seq = " . $this->escaped['seq'] . " LIMIT 0, 1";
+		$escaped = $this->real_escape_array($request);
 
-		$result = $this->db->query($query);
-		$this->num_rows = $result->num_rows;
-
-		return $result->fetch_object();
-	}
-
-	function select_list()
-	{
-		$query = "SELECT * FROM board
-		JOIN
+		$this->query('SELECT * FROM board WHERE seq = ? LIMIT 0, 1', array
 		(
-			SELECT seq FROM board ORDER BY seq DESC
-			LIMIT " . (($this->escaped['page'] - 1) * $this->escaped['per_page']) . ", " . $this->escaped['per_page'] . "
-		)
-		T ON board.seq = T.seq ORDER BY board.seq DESC";
+			intval($escaped['seq']),
+		));
 
-		if (true === array_key_exists($this->escaped['field'], $this->field_columns) && '' != $this->escaped['keyword'])
+		$this->num_rows = $this->result->num_rows;
+		return $this->result->fetch_object();
+	}
+
+	function select_list(&$request)
+	{
+		$escaped = $this->real_escape_array($request);
+
+		if (true === array_key_exists($escaped['field'], $this->field_columns) && '' != $escaped['keyword'])
 		{
-			$query = "SELECT * FROM board
-			JOIN
+			$this->query('SELECT * FROM board JOIN (SELECT seq FROM board WHERE ' . $this->field_columns[$escaped['field']] . ' LIKE ? ORDER BY seq DESC LIMIT ?, ?) T ON board.seq = T.seq ORDER BY board.seq DESC', array
 			(
-				SELECT seq FROM board
-				WHERE " . $this->field_columns[$this->escaped['field']] . " LIKE '%" . $this->escaped['keyword'] . "%'
-				ORDER BY seq DESC
-				LIMIT " . (($this->escaped['page'] - 1) * $this->escaped['per_page']) . ", " . ($this->escaped['per_page'] + 1) . "
-			)
-			T ON board.seq = T.seq ORDER BY board.seq DESC";
+				'%' . $escaped['keyword'] . '%',
+                                ($escaped['page'] - 1) * $escaped['per_page'],
+                                intval($escaped['per_page']),
+			));
+		}
+		else
+		{
+			$this->query('SELECT * FROM board JOIN (SELECT seq FROM board ORDER BY seq DESC LIMIT ?, ?) T ON board.seq = T.seq ORDER BY board.seq DESC', array
+			(
+				($escaped['page'] - 1) * $escaped['per_page'],
+				intval($escaped['per_page']),
+			));
 		}
 
-		$result = $this->db->query($query);
-		$this->num_rows = $result->num_rows;
+		$this->num_rows = $this->result->num_rows;
 
 		$fetched = array();
-		while ($row = $result->fetch_object())
+		while ($row = $this->result->fetch_object())
 		{
 			$fetched[] = $row;
 		}
@@ -74,37 +73,54 @@ class board_model extends model
 		return $fetched;
 	}
 
-	function select_count()
+	function select_count(&$request)
 	{
-		$query = "SELECT count(*) as board_count FROM board";
+		$escaped = $this->real_escape_array($request);
 
-		if (true === array_key_exists($this->escaped['field'], $this->field_columns) && '' != $this->escaped['keyword'])
-                {
-                        $query = "SELECT count(*) as board_count FROM board WHERE " . $this->field_columns[$this->escaped['field']] . " LIKE '%" . $this->escaped['keyword'] . "%'";
-                }
+		if (true === array_key_exists($escaped['field'], $this->field_columns) && '' != $escaped['keyword'])
+		{
+			$this->query('SELECT count(*) as board_count FROM board WHERE ' . $this->field_columns[$escaped['field']] . ' LIKE ?', array
+			(
+				'%' . $escaped['keyword'] . '%',
+			));
+		}
+		else
+		{
+			$this->query('SELECT count(*) as board_count FROM board', array
+			(
 
-		$result = $this->db->query($query);
-		$row = $result->fetch_object();
+			));
+		}
 
+		$row = $this->result->fetch_object();
 		return $row->board_count;
 	}
 
-	function insert_info()
+	function insert_info(&$request)
 	{
-		$query = "INSERT INTO board (title, content, file1, file2, userid, inserttime, updatetime) VALUES ('" . $this->escaped['title'] . "', '" . $this->escaped['content'] . "', '" . $this->escaped['file1'] . "', '" . $this->escaped['file2'] . "', '" . $this->escaped['sess_userid'] . "', NOW(), NOW())";
+		$escaped = $this->real_escape_array($request);
 
-		$this->db->query($query);
-		return $this->db->affected_rows;
+		$this->query('INSERT INTO board (title, content, file1, file2, userid, inserttime, updatetime) VALUES (?, ?, ?, ?, ?, NOW(), NOW())', array
+		(
+			$escaped['title'],
+			$escaped['content'],
+			$escaped['file1'],
+			$escaped['file2'],
+			$escaped['sess_userid'],
+		));
+
+		return $this->affected_rows;
 	}
 
-	function insert_list()
+	function insert_list(&$request)
 	{
+		$escaped = $this->real_escape_array($request);
 		$query = "INSERT INTO board (title, content, file1, file2, userid, inserttime, updatetime) VALUES";
 
-		$count = count($this->escaped['seqs']);
+		$count = count($escaped['seqs']);
 		for ($i = 0; $i < $count; $i++)
 		{
-			$query .= "('" . $this->escaped['titles'][$i] . "', '" . $this->escaped['contents'][$i] . "', '" . $this->escaped['file1s'][$i] . "', '" . $this->escaped['file2s'][$i] . "', '" . $this->escaped['sess_userids'][$i] . "', NOW(), NOW())";
+			$query .= "('" . $escaped['titles'][$i] . "', '" . $escaped['contents'][$i] . "', '" . $escaped['file1s'][$i] . "', '" . $escaped['file2s'][$i] . "', '" . $escaped['sess_userids'][$i] . "', NOW(), NOW())";
 
 			if ($i < ($count - 1))
 			{
@@ -112,52 +128,70 @@ class board_model extends model
 			}
 		}
 
-		$this->db->query($query);
-		return $this->db->affected_rows;
+		$this->query($query);
+		return $this->affected_rows;
 	}
 
-	function update_info()
+	function update_info(&$request)
 	{
-		$query = "UPDATE board SET title = '" . $this->escaped['title'] . "', content = '" . $this->escaped['content'] . "', file1 = '" . $this->escaped['file1'] . "', file2 = '" . $this->escaped['file2'] . "', userid = '" . $this->escaped['sess_userid'] . "', updatetime = NOW() WHERE seq = " . $this->escaped['seq'];
+		$escaped = $this->real_escape_array($request);
 
-		$this->db->query($query);
-		return $this->db->affected_rows;
+		$this->query('UPDATE board SET title = ?, content = ?, file1 = ?, file2 = ?, userid = ?, updatetime = NOW() WHERE seq = ?', array
+		(
+			$escaped['title'],
+			$escaped['content'],
+			$escaped['file1'],
+			$escaped['file2'],
+			$escaped['sess_userid'],
+			intval($escaped['seq']),
+		));
+
+		return $this->affected_rows;
 	}
 
-	function update_list()
+	function update_list(&$request)
 	{
+		$escaped = $this->real_escape_array($request);
+
 		$query = "UPDATE board SET ";
-		$count = count($this->escaped['seqs']);
+		$count = count($escaped['seqs']);
 
 		foreach (array('titles', 'contents', 'file1s', 'file2s') as $field)
 		{
 			$query .= $field . " = CASE seq";
 			for ($i = 0; $i < $count; $i++)
 			{
-				$query .= " WHEN " . $this->escaped['seqs'][$i] . " THEN '" . $this->escaped[$field][$i] . "'";
+				$query .= " WHEN " . $escaped['seqs'][$i] . " THEN '" . $escaped[$field][$i] . "'";
 			}
 			$query .= " END, ";
 		}
 
-		$query .= "userid = '" . $this->escaped['sess_userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ")";
+		$query .= "userid = '" . $escaped['sess_userid'] . "', updatetime = NOW() WHERE seq in (" . implode(', ', $escaped['seqs']) . ")";
 
-		$this->db->query($query);
-		return $this->db->affected_rows;
+		$this->query($query);
+		return $this->affected_rows;
 	}
 
-	function delete_info()
+	function delete_info(&$request)
 	{
-		$query = "DELETE FROM board WHERE seq = " . $this->escaped['seq'] . " AND userid = '" . $this->escaped['sess_userid'] . "'";
+		$escaped = $this->real_escape_array($request);
 
-		$this->db->query($query);
-		return $this->db->affected_rows;
+		$this->query('DELETE FROM board WHERE seq = ? AND userid = ?', array
+		(
+			$escaped['seq'],
+			$escaped['sess_userid'],
+		));
+
+		return $this->affected_rows;
 	}
 
-	function delete_list()
+	function delete_list(&$request)
 	{
-		$query = "DELETE FROM board WHERE seq in (" . implode(', ', $this->escaped['seqs']) . ") AND userid = '" . $this->escaped['sess_userid'] . "'";
+		$escaped = $this->real_escape_array($request);
 
-		$this->db->query($query);
-		return $this->db->affected_rows;
+		$query = "DELETE FROM board WHERE seq in (" . implode(', ', $escaped['seqs']) . ") AND userid = '" . $escaped['sess_userid'] . "'";
+
+		$this->query($query);
+		return $this->affected_rows;
 	}
 }

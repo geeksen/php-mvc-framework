@@ -61,8 +61,8 @@ class user extends controller
 		$request['passwd'] = md5($request['passwd']);
 
 		$db = $this->load_database('pmf');
-		$user_model = $this->load_model($db, $request, 'dir/user_model');
-		$user_info = $user_model->select_info_by_userid_and_passwd();
+		$user_model = $this->load_model($db, 'dir/user_model');
+		$user_info = $user_model->select_info_by_userid_and_passwd($request);
 
 		if (0 == $user_model->num_rows)
 		{
@@ -99,9 +99,9 @@ class user extends controller
 		$request['passwd'] = md5($request['passwd']);
 
 		$db = $this->load_database('pmf');
-		$user_model = $this->load_model($db, $request, 'dir/user_model');
+		$user_model = $this->load_model($db, 'dir/user_model');
 
-		$affected_rows = $user_model->insert_info();
+		$affected_rows = $user_model->insert_info($request);
 
 		if (1 != $affected_rows)
 		{

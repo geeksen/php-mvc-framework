@@ -1,7 +1,7 @@
 <?php
 
 error_reporting(E_ALL);
-set_error_handler('error_handler');
+//set_error_handler('error_handler');
 
 function error_handler($errno, $errstr, $errfile = '', $errline = 0, $errcontext = array())
 {
@@ -87,10 +87,14 @@ class error
 		3014 => 'model not found',
 		3015 => 'view not found',
 		3016 => 'database config not found',
+		3017 => 'invalid query params',
 
 		// COMMON
-		3017 => 'query failed',
-		3018 => 'unlink failed',
+		3018 => 'query failed',
+		3019 => 'unlink failed',
+
+		// COMMAND
+		3020 => 'not cli mode',
 	);
 
 	function __construct()
