@@ -51,6 +51,7 @@ server {
                 return 444;
         }
 }
+```
 
 Install MariaDB
 ---------------
