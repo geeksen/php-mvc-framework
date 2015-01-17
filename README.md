@@ -1,18 +1,23 @@
 php-mvc-framework
 =================
 
-<!--
-Install NginX
---------------
+Install PHP
+-----------
 * sudo apt-get update
 * sudo apt-get upgrade
-* sudo apt-get install nginx
-* sudo apt-get install php5-fpm
+* sudo apt-get install php5-fpm php5-mysqlnd php5-curl
+* sudo apt-get install libmagic-dev
 
 * sudo vi /etc/php5/fpm/php.ini
 ```
 cgi.fix_pathinfo=0
 ```
+
+Install NginX
+--------------
+* sudo apt-get update
+* sudo apt-get upgrade
+* sudo apt-get install nginx
 
 * sudo vi /etc/nginx/sites-enabled/default
 ```
@@ -46,26 +51,6 @@ server {
                 return 444;
         }
 }
--->
-
-Install Apache2
----------------
-* sudo apt-get update
-* sudo apt-get upgrade
-* sudo apt-get install apache2
-* sudo a2enmod rewrite
-* sudo a2enmod mime_magic
-
-* cd /etc/apache2/sites-enabled
-* sudo vi 000-default.conf
-```
-<Directory /var/www>
-..
-AllowOverride All
-</Directory>
-```
-
-* sudo /etc/init.d/apache2 restart
 
 Install MariaDB
 ---------------
@@ -100,13 +85,6 @@ handlersocket_port_wr = 9999
 * SHOW PROCESSLIST;
 * exit
 -->
-
-Install PHP
------------
-* sudo apt-get update
-* sudo apt-get upgrade
-* sudo apt-get install libapache2-mod-php5 php5 php5-mysqlnd php5-curl
-* sudo /etc/init.d/apache2 restart
 
 Install php-mvc-framework
 -------------------------
