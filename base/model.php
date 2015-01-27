@@ -23,7 +23,7 @@ class model
 				continue;
 			}
 
-			# for hander_socket
+			// for hander_socket
 			$value = str_replace("\t", ' ', $value);
 
 			$value = str_replace('<', '&lt;', $value);
