@@ -25,7 +25,7 @@ server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
 
-        root /var/www;
+        root /var/www/html;
 	
         autoindex off;
         index index.php;
@@ -89,7 +89,7 @@ handlersocket_port_wr = 9999
 
 Install php-mvc-framework
 -------------------------
-* cd /var/www
+* cd /var/www/html
 * git clone https://github.com/geeksen/php-mvc-framework.git
 * cd php-mvc-framework
 * mv * ..
