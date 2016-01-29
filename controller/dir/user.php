@@ -4,8 +4,10 @@ class user extends controller
 {
 	var $session;
 
-	function __construct()
+	function __construct(&$request_uri)
 	{
+		parent::__construct($request_uri);
+
 		$this->session = $this->load_library('session');
 	}
 

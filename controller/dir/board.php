@@ -10,9 +10,9 @@ class board extends controller
 		'file2',
 	);
 
-	function __construct(&$path_info)
+	function __construct(&$request_uri)
 	{
-		parent::__construct($path_info);
+		parent::__construct($request_uri);
 
 		$this->session = $this->load_library('session');
 
