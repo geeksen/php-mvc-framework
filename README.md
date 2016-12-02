@@ -41,35 +41,53 @@ server {
                 try_files $uri $uri/ /index.php;
 
                 location = /index.php {
-                        fastcgi_pass unix:/var/run/php5-fpm.sock;
-                        include fastcgi_params;
-                        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+			include snippets/fastcgi-php.conf;
+			fastcgi_pass unix:/run/php/php7.0-fpm.sock;
                 }
         }
 
         location ~ \.php$ {
                 return 444;
         }
+
+	location ~ /\.ht {
+		deny all;
+	}
 }
 ```
 
 Install MariaDB
 ---------------
-* sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
-* sudo vi /etc/apt/sources.list
+* sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+* sudo nano /etc/apt/sources.list
 ```
-deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main
-deb-src http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main
+# http://downloads.mariadb.org/mariadb/repositories/
+deb [arch=amd64,i386] http://ftp.kaist.ac.kr/mariadb/repo/10.1/ubuntu xenial main
+deb-src http://ftp.kaist.ac.kr/mariadb/repo/10.1/ubuntu xenial main
 ```
 
 * sudo apt-get update
 * sudo apt-get upgrade
 * sudo apt-get install mariadb-server
+* sudo /etc/init.d/mysql restart
+
+<!--
+* sudo /etc/init.d/mysql stop
+* sudo /usr/bin/mysqld_safe --skip-grant-tables &
+* mysql -u root
+```
+update mysql.user set plugin='mysql_native_password';
+quit;
+```
+
+* sudo kill -9 $(pgrep mysql)
+* sudo /etc/init.d/mysql start
+-->
 
 <!--
 Install HandlerSocket
 ---------------------
-* sudo vi /etc/mysql/my.cnf
+* sudo nano /etc/mysql/my.cnf
 ```
 [mysqld]
 ..
@@ -78,11 +96,11 @@ handlersocket_port = 9998
 handlersocket_port_wr = 9999
 ```
 
-* mysql -u root -p
+* sudo mysql -u root -p
 * INSTALL PLUGIN handlersocket SONAME 'handlersocket.so';
 * exit
 * sudo /etc/init.d/mysql restart
-* mysql -u root -p
+* sudo mysql -u root -p
 * SHOW PROCESSLIST;
 * exit
 -->
