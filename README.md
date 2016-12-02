@@ -5,10 +5,10 @@ Install PHP
 -----------
 * sudo apt-get update
 * sudo apt-get upgrade
-* sudo apt-get install php5-fpm php5-mysqlnd php5-curl
+* sudo apt-get install php7.0-fpm php7.0-mysql php7.0-curl
 * sudo apt-get install libmagic-dev
 
-* sudo vi /etc/php5/fpm/php.ini
+* sudo vi /etc/php/7.0/fpm/php.in
 ```
 cgi.fix_pathinfo=0
 ```
