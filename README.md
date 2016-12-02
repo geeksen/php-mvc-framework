@@ -26,7 +26,7 @@ server {
         listen [::]:80 default_server ipv6only=on;
 
         root /var/www/html;
-	
+
         autoindex off;
         index index.php;
 
@@ -41,8 +41,8 @@ server {
                 try_files $uri $uri/ /index.php;
 
                 location = /index.php {
-			include snippets/fastcgi-php.conf;
-			fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+                        include snippets/fastcgi-php.conf;
+                        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
                 }
         }
 
@@ -50,9 +50,9 @@ server {
                 return 444;
         }
 
-	location ~ /\.ht {
-		deny all;
-	}
+        location ~ /\.ht {
+                deny all;
+        }
 }
 ```
 
