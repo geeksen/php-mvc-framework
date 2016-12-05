@@ -319,7 +319,6 @@ class board extends controller
 
 	function batch()
 	{
-	
 		$request = $this->input_post(array
 		(
 			'seqs' => array(),
