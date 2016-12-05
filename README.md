@@ -3,23 +3,23 @@ php-mvc-framework
 
 Install PHP
 -----------
-* sudo apt-get update
-* sudo apt-get upgrade
-* sudo apt-get install php7.0-fpm php7.0-mysql php7.0-curl
-* sudo apt-get install libmagic-dev
+* sudo apt update
+* sudo apt upgrade
+* sudo apt install php7.0-fpm php7.0-mysql php7.0-curl
+* sudo apt install libmagic-dev
 
-* sudo vi /etc/php/7.0/fpm/php.in
+* sudo nano /etc/php/7.0/fpm/php.in
 ```
 cgi.fix_pathinfo=0
 ```
 
 Install NginX
 --------------
-* sudo apt-get update
-* sudo apt-get upgrade
-* sudo apt-get install nginx
+* sudo apt update
+* sudo apt upgrade
+* sudo apt install nginx
 
-* sudo vi /etc/nginx/sites-enabled/default
+* sudo nano /etc/nginx/sites-enabled/default
 ```
 server {
         listen 80 default_server;
@@ -66,9 +66,9 @@ deb [arch=amd64,i386] http://ftp.kaist.ac.kr/mariadb/repo/10.1/ubuntu xenial mai
 deb-src http://ftp.kaist.ac.kr/mariadb/repo/10.1/ubuntu xenial main
 ```
 
-* sudo apt-get update
-* sudo apt-get upgrade
-* sudo apt-get install mariadb-server
+* sudo apt update
+* sudo apt upgrade
+* sudo apt install mariadb-server
 * sudo /etc/init.d/mysql restart
 
 <!--
