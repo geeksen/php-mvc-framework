@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 function error_handler($errno, $errstr, $errfile = '', $errline = 0, $errcontext = array())
 {
-	$error = new error();
+	$error = new error_();
 	$errno = (1000 == $errno) ? $error->code($errstr) : $errno;
 
 	$error->show('html', $errno, $errstr, $errfile, $errline, $errcontext);
@@ -13,7 +13,7 @@ function error_handler($errno, $errstr, $errfile = '', $errline = 0, $errcontext
 	exit;
 }
 
-class error
+class error_
 {
 	var $codes = array
 	(
